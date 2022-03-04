@@ -29,7 +29,7 @@ export function useMultipleContractsSingleInterface(addresses, ABI) {
     } else {
       return []
     }
-  }, [addresses, ABI])
+  }, [addresses, ABI, web3])
 
 }
 
