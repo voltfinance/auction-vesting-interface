@@ -1,0 +1,13 @@
+import { ChainId, Token } from '@fuseio/fuse-swap-sdk'
+
+export const MULTICALL_ADDRESS = "0x3CE6158b7278Bf6792e014FA7B4f3c6c46fe9410"
+export const VOLT_ADDRESS = "0xc82F2CfBF7aA54a3b6fFd0f687Da0B0107532a2B"
+export const VOLT = new Token(ChainId.FUSE, VOLT_ADDRESS, 18, 'VOLT', 'Volt')
+
+export const TOKENSWAP_VESTING_ADDRESSES = {
+  '0.03': '0xA721F19Cbf273460Fb46Dbdac0eE3bF236e51e78',
+  '0.035': '0xb3fD8E2c773Eb39A557073e09b02C18B0dfc1fe8',
+  '0.04': '0x938b838BF1EEDD11b5Ee812865Ad35671f3A7854',
+  '0.06': '0x0e5A1b9d6A12D81d4b0f389FC3525eB66E060B89'
+}
+export const NetworkContextName = 'NETWORK'
