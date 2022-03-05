@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { TOKENSWAP_VESTING_ADDRESSES } from '../constants'
-// import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber.js'
 import {
   useVestingContract,
   useMultipleContractsSingleInterface,
@@ -67,8 +67,15 @@ export function useTotalClaim(vestingAddress){
   const claims = useClaims(vestingAddress)
 
   return useMemo(() => {
-    claims.reduce((i, sum) => (new BigNumber(claims[i][1])).plus(sum), newBigNumber('0'))
-  })
+    claims?.reduce((claim, sum) => (claim?.length == 2 ? new BigNumber(claim[1]): new BigNumber(0)).plus(sum), new BigNumber('0'))
+  }, [claims])
+}
+
+export function useAllClaims(){
+  // TODO:
+  // const allVestingIds = useAllVestingIds()
+  // // vestingIds.forEach((elem) => {console.log(elem[0])})
+  // const 
 }
 
 
