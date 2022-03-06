@@ -259,7 +259,11 @@ export default function UnvestModal() {
                   <ButtonGradient
                     maxWidth={'100%'}
                     marginTop={'33px'}
-                    onClick={() => setStage(4)}
+                    onClick={() => {
+                      vestingContract.methods
+                        .claimVestedTokens(key)
+                        .send({ from: account })
+                    }}
                   >
                     Claim {secondClaims[key].decimalPlaces(4).toString()}
                   </ButtonGradient>
