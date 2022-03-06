@@ -5,18 +5,25 @@ import {
   useVestingContract,
   useMultipleContractsSingleInterface,
 } from './useContract'
-import { useMultiCallSameData, useSingleCallMultiData, useSingleCallResult } from './useMultiCall'
+import {
+  useMultiCallSameData,
+  useSingleCallMultiData,
+  useSingleCallResult,
+} from './useMultiCall'
 import { useWeb3Context } from '@/context/web3'
 import VESTING_ABI from '@/constants/abis/vesting.json'
+import useSingleContractCall from './useSingleContractCall'
 
 export function useDecodeSolidityUintArrays(bytesArray) {
   return useWeb3DecodeParameters(bytesArray, ['uint256[]'])
 }
 
-function useWeb3DecodeParameters(bytesArray, argTypes){
-  const {web3} = useWeb3Context()
+function useWeb3DecodeParameters(bytesArray, argTypes) {
+  const { web3 } = useWeb3Context()
   return useMemo(() => {
-    return bytesArray.map(bytes => web3.eth.abi.decodeParameters(argTypes, bytes))
+    return bytesArray.map((bytes) =>
+      web3.eth.abi.decodeParameters(argTypes, bytes),
+    )
   }, [web3, bytesArray, argTypes])
 }
 
@@ -27,7 +34,12 @@ export function useVestingIds(vestingAddress) {
   const rawResult = useSingleCallResult(vestingContract, 'getActiveGrants', [
     account,
   ])
-  return useDecodeSolidityUintArrays(rawResult?.returnData ??[])[0]
+  const ret = useDecodeSolidityUintArrays(rawResult?.returnData ?? [])
+  const vestingIds = useMemo(
+    () => (ret?.length && Object.values(ret[0]).length ? ret[0]['0'] : []),
+    [ret],
+  )
+  return vestingIds
 }
 
 export function useAllVestingIds() {
@@ -41,47 +53,58 @@ export function useAllVestingIds() {
     vestingAddresses,
     VESTING_ABI,
   )
-  const rawResult = useMultiCallSameData(contracts, 'getActiveGrants', [account])
+  const rawResult = useMultiCallSameData(contracts, 'getActiveGrants', [
+    account,
+  ])
   const results = useDecodeSolidityUintArrays(rawResult?.returnData ?? [])
   return results
 }
 
-
-export function useClaims(vestingAddress){
+export function useClaims(vestingAddress) {
   const vestingContract = useVestingContract(vestingAddress)
   const vestingIds = useVestingIds(vestingAddress)
-  const args = useMemo(() => {
-    if(!vestingIds) return
+  const args = useMemo(() => vestingIds?.map((id) => [id]), [vestingIds])
+  const rawResult = useSingleCallMultiData(
+    vestingContract,
+    'calculateGrantClaim',
+    args,
+  )
+  const claims = useWeb3DecodeParameters(rawResult?.returnData ?? [], [
+    'uint16',
+    'uint256',
+  ])
 
-    return vestingIds[0]?.map(id => [id])
-  }, [vestingIds])
+  const entries = useMemo(() => {
+    return new Map(claims.map((claim, i) => [vestingIds[i], Object.values(claim)]))
+  }, [claims, vestingIds])
 
-  const rawResult = useSingleCallMultiData(vestingContract, 'calculateGrantClaim', args)
-
-  const claims = useWeb3DecodeParameters(rawResult?.returnData ?? [], ['uint16', 'uint256'])
-  return claims
+  return useMemo(() => Object.fromEntries(entries), [entries])
 }
 
-
-export function useTotalClaim(vestingAddress){
+export function useTotalClaim(vestingAddress) {
   const claims = useClaims(vestingAddress)
-
   return useMemo(() => {
-    claims?.reduce((claim, sum) => (claim?.length == 2 ? new BigNumber(claim[1]): new BigNumber(0)).plus(sum), new BigNumber('0'))
+    return Object.values(claims).reduce((mem, claim) => mem.plus(claim[1]), BigNumber(0))
   }, [claims])
 }
 
-export function useAllClaims(){
+export function useAllClaims() {
   // TODO:
   // const allVestingIds = useAllVestingIds()
   // // vestingIds.forEach((elem) => {console.log(elem[0])})
-  // const 
+  // const
 }
 
-
-export function useClaim(vestingAddress, grantId){
+export function useClaim(vestingAddress, grantId) {
   const vestingContract = useVestingContract(vestingAddress)
-  const rawResult = useSingleCallResult(vestingContract, 'calculateGrantClaim', [grantId])
-  const claims = useWeb3DecodeParameters(rawResult?.returnData ?? [], ['uint16', 'uint256'])
+  const rawResult = useSingleCallResult(
+    vestingContract,
+    'calculateGrantClaim',
+    [grantId],
+  )
+  const claims = useWeb3DecodeParameters(rawResult?.returnData ?? [], [
+    'uint16',
+    'uint256',
+  ])
   return claims
 }

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import ClaimVoltModal from './components/ClaimVoltModal'
 import UnvestModal from './components/UnvestModal'
 import Header from './header'
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
+import { Route, Routes as Switch, BrowserRouter as Router } from 'react-router-dom'
 
 import starsAnimationData from '@/assets/lotties/stars.json'
 import lightingAnimationData from '@/assets/lotties/lighting.json'
@@ -62,11 +62,10 @@ const HomePage = () => {
             <Header />
             <Switch>
               <Route
-                exact
                 path="/unvest/:vestingAddress"
-                component={UnvestModal}
+                element={<UnvestModal/>}
               />
-              <Route component={ClaimVoltModal} />
+              <Route exact path='/' element={<ClaimVoltModal/>} />
             </Switch>
             {/* <Footer /> */}
           </Router>

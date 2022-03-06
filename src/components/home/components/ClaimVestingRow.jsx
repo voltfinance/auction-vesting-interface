@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { Text } from 'rebass'
 import { formatEther } from 'ethers/lib/utils'
+import { useNavigate } from 'react-router-dom'
 import Row from './Row'
 import { ButtonGradient } from './Button'
 import VoltIcon from '../../../assets/images/volt.svg'
@@ -14,6 +15,7 @@ export default function ClaimVestingTableRow({ vestingAddress, name }) {
 //   const userUnclaimedAmounts = useVestingTotalUnclaimedAmounts(vestingAddress, account ?? undefined)
 //   const claimableIds = useVestingClaimableIds(vestingAddress, account ?? undefined)
 
+  const navigate = useNavigate()
   const userUnclaimedAmounts = [123,123,123]
   const claimableIds = ["0x1"]
 
@@ -45,17 +47,17 @@ export default function ClaimVestingTableRow({ vestingAddress, name }) {
       </Text>
       {claimableIds?.map((userVestingId, index) => (
         
-        <Link to={'/unvest/' + vestingAddress}>
+        // <Link to={'/unvest/' + vestingAddress}>
         <ButtonGradient
           key={userVestingId}
           width={'100px'}
           height={'32px'}
           padding={'0px'}
-          onClick={() => {}}
+          onClick={() => {navigate(`/unvest/${vestingAddress}`)}}
         >
           Claim
         </ButtonGradient>
-        </Link>
+        // </Link>
       ))}
     </Row>
   )

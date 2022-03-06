@@ -7,6 +7,7 @@ import { useMemo, useState, useCallback, useEffect } from 'react'
 
 // import { useWeb3Context } from "../context/web3";
 // import MULTICALL_ABI from '@/constants/abis/multicall.json'
+import useSingleContractCall from './useSingleContractCall'
 import { useMultiCallContract } from './useContract'
 import { useAsyncWeb3Call } from './'
 import { multicastChannel } from 'redux-saga'
@@ -59,37 +60,8 @@ export function useDoubleMultiCallSingleMethod(callObjects) {
 
 function useMultiCallResult(callData) {
   const multiCall = useMultiCallContract()
-  const [result, setResult] = useState(undefined)
-  // useEffect(() => {
-  //   if(!multiCall || !callData) return
-  //   multiCall.methods.aggregate(callData).call().then(setResult)
-  // }, [multiCall, callData])
-
-  const fetchResult = useCallback(async () => {
-    if (multiCall) {
-      const result = await multiCall.methods.aggregate(callData).call()
-      setResult(result)
-    }
-  }, [setResult])
-
-  useEffect(() => {
-    if (callData && multiCall) {
-      fetchResult()
-    }
-  }, [callData, multiCall])
-
+  const result = useSingleContractCall(multiCall, 'aggregate', [callData])
   return result
-}
-
-export function useSingleCallSetResult(contract, method, args, setResult) {
-  const multiCall = useMultiCallContract()
-  const callData = useAggregateCallData([{ contract, method, args }])
-  const promise = useMemo(() => {
-    if (!multiCall) return
-    return multiCall.methods.aggregate(callData).call()
-  }, [multiCall, contract, method, args])
-
-  useAsyncWeb3Call(promise, setResult, [])
 }
 
 export function useSingleCallResult(contract, method, args) {

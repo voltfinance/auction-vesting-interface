@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Text } from 'rebass'
 import ClaimVestingTableRow from './ClaimVestingRow'
 import { TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
-import { useAllVestingIds } from '../../../hooks/useVesting'
+import { useAllVestingIds, useClaims } from '../../../hooks/useVesting'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -40,7 +40,7 @@ const Main = styled.div`
 `
 
 export default function ClaimVestingTable() {
-  console.log(useAllVestingIds())
+  
   return (
     <Wrapper>
       <Card style={{ background: '#242637', width: '470px', position: 'absolute', top:'100px'  }}>

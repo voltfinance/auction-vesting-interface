@@ -5,14 +5,16 @@ export default function useSingleContractCall (contract, method, args = []) {
   const { chainId } = useWeb3Context()
 
   const [result, setResult] = useState(null)
+  const [ready, setReady] = useState(false)
 
   const memoArgs = useMemo(() => args, [args])
 
   const call = async () => {
-    if (!contract || !method) return
+    if (!contract || !method || ready) return
 
     const callResult = await contract.methods[method](...memoArgs).call()
     setResult(callResult)
+    setReady(true)
   }
 
   useEffect(() => {
