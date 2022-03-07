@@ -17,7 +17,7 @@ export default function ClaimVestingTableRow({ vestingAddress, name }) {
 
   return (
     <Row
-      padding={'11px 15px 11px 29px'}
+      padding={'11px 12px 11px 15px'}
       color={'white'}
       backgroundColor={'black'}
       justifyContent={'space-between'}
@@ -31,7 +31,7 @@ export default function ClaimVestingTableRow({ vestingAddress, name }) {
         
       </Text>
         <ButtonGradient
-          width={'100px'}
+          width={'67px'}
           height={'32px'}
           padding={'0px'}
           onClick={() => {navigate(`/unvest/${vestingAddress}`)}}
