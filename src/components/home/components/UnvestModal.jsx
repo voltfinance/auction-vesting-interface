@@ -68,20 +68,32 @@ const Volt = styled.div`
   margin: auto;
 `
 const Info = styled.div`
-width: 440px;
-font-family: Inter;
-font-size: 18px;
-font-style: normal;
-font-weight: 500;
-line-height: 22px;
-letter-spacing: 0px;
-text-align: left;
-color: white;
-margin-right: 20px;
-> img {
-  padding-bottom: 4px;
-  padding-right: 7px
-}
+  width: 440px;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: white;
+  margin-right: 20px;
+  > img {
+    padding-bottom: 4px;
+    padding-right: 7px
+  }
+`
+const Link = styled.a`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-family: 'Inter';
+  font-size: 18px;
+  color: white;
+  margin-bottom: 5px;
+  :hover{
+    text-decoration: underline;
+  }
 `
 
 export default function UnvestModal() {
@@ -174,9 +186,9 @@ export default function UnvestModal() {
   if (vestingAddress !== '0xfa1d759e5B9Cb6675CF2Ac8F235ab4eedc78c42E') {
     return (
       <Wrapper>
+        <Link href="/">↤ Back</Link>
         <Info>
           <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
-
         </Info>
         <div style={{ display: 'flex' }}>
           <Card
@@ -317,6 +329,7 @@ export default function UnvestModal() {
   } else {
     return (
       <Wrapper>
+        <Link href="/" style={{ paddingLeft: '280px' }}>↤ Back</Link>
         <Info>
           <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
 
@@ -385,6 +398,4 @@ export default function UnvestModal() {
       </Wrapper>
     )
   }
-
-
 }

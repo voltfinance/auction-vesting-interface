@@ -6,15 +6,15 @@ import useAddToken from '@/hooks/useAddToken'
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  flex-flow: row wrap;
+  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
+  justify-content: center;
   position: relative;
   height: 100vh;
 `
 
 const Card = styled.div`
-  position: absolute;
-  top: 30%;
   width: 455px;
   display: flex;
   margin: auto;
@@ -49,12 +49,25 @@ const Main = styled.div`
 `
 
 const Text = styled.p`
-font-family: Inter;
-font-style: normal;
-font-weight: 800;
-font-size: 20px;
-line-height: 24px;
-text-align: center;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+`
+const Link = styled.a`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-family: 'Inter';
+  font-size: 18px;
+  color: white;
+  margin-bottom: 5px;
+  margin-right: 25%;
+  :hover{
+    text-decoration: underline;
+  }
 `
 
 export default function ClaimVestingTable() {
@@ -62,21 +75,22 @@ export default function ClaimVestingTable() {
 
   return (
     <Wrapper>
+      <Link href="/">↤ Back</Link>
       <Card >
         <Main>
-             <div>
-             <Text>Thank you for joining Voltage Finance</Text>
-             <Text>Add VOLT token to your wallet</Text>
-             </div>
-             <img src={volt} width={'100px'} />       
+          <div>
+            <Text>Thank you for joining Voltage Finance</Text>
+            <Text>Add VOLT token to your wallet</Text>
+          </div>
+          <img src={volt} width={'100px'} />
 
           <button
-          className='button--secondary'
-          onClick={addToken}
-          style={{height: '50px'}}
-        >
-          Add the VOLT token to wallet
-        </button>
+            className='button--secondary'
+            onClick={addToken}
+            style={{ height: '50px' }}
+          >
+            Add the VOLT token to wallet
+          </button>
         </Main>
       </Card>
     </Wrapper>
