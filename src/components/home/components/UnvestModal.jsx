@@ -18,6 +18,7 @@ import { TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
 import { useVestingContract } from '../../../hooks/useContract'
 import useSingleContractCall from '../../../hooks/useSingleContractCall'
 import { useWeb3Context } from '../../../context/web3'
+import ConnectOrSwitch from './ConnectOrSwitch'
 // import {useB} from '@/hooks'
 
 const Wrapper = styled.div`
@@ -69,7 +70,7 @@ const Volt = styled.div`
 `
 
 export default function UnvestModal() {
-  const { account } = useWeb3Context()
+  const { account, chainId } = useWeb3Context()
   const { vestingAddress } = useParams()
   const isVestingAddress = useMemo(() => {
     return Object.values(TOKENSWAP_VESTING_ADDRESSES).includes(vestingAddress)
@@ -148,6 +149,8 @@ export default function UnvestModal() {
       </>
     )
   }
+  if(!account || chainId !== 122) return (<ConnectOrSwitch/>)
+
   return (
     <Wrapper>
       <Row style={{ position: 'absolute', top: '100px', left: '35%' }}>

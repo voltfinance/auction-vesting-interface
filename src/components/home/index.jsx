@@ -10,9 +10,6 @@ import { Route, Routes as Switch, BrowserRouter as Router } from 'react-router-d
 import starsAnimationData from '@/assets/lotties/stars.json'
 import lightingAnimationData from '@/assets/lotties/lighting.json'
 import smokeAnimationData from '@/assets/lotties/smoke.json'
-// import { NetworkContextName } from '../../constants'
-
-// const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 const HomePage = () => {
   const starsRef = useRef(null)
