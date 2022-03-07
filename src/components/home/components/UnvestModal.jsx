@@ -103,9 +103,9 @@ export default function UnvestModal() {
     return Object.keys(claims).reduce((mem, key) => {
       return key % 2
         ? Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true,
+        })
         : mem
     }, {})
   }, [claims])
@@ -123,9 +123,9 @@ export default function UnvestModal() {
       return key % 2
         ? mem
         : Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true,
+        })
     }, {})
   }, [claims])
   const secondClaimSum = useMemo(
@@ -170,15 +170,15 @@ export default function UnvestModal() {
       </>
     )
   }
-  if(!account || chainId !== 122) return (<ConnectOrSwitch/>)
+  if (!account || chainId !== 122) return (<ConnectOrSwitch />)
 
   return (
     <Wrapper>
       <Info>
-         <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
+        <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
 
       </Info>
-      <div style={{display: 'flex'}}>
+      <div style={{ display: 'flex' }}>
         <Card
           style={{
             width: '256px!important',
@@ -272,7 +272,7 @@ export default function UnvestModal() {
               alt=""
               style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
             />
-            <p style={{marginBottom: '21px'}}>Daily Volt Unvesting</p>
+            <p style={{ marginBottom: '21px' }}>Daily Volt Unvesting</p>
             <img
               src={Underline}
               alt=""

@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import { Text } from 'rebass'
 import ClaimVestingTableRow from './ClaimVestingRow'
 import { TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
-import { useAllClaims, useAllVestingIds } from '../../../hooks/useVesting'
+import { useAllVestingIds } from '../../../hooks/useVesting'
 import check from '@/assets/images/checkmark.png'
 import info from '@/assets/images/info.png'
+
 const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
@@ -46,43 +47,43 @@ const Main = styled.div`
   }
 `
 const Info = styled.p`
-font-family: Inter;
-font-size: 18px;
-font-style: normal;
-font-weight: 500;
-line-height: 22px;
-letter-spacing: 0px;
-text-align: left;
-color: white;
-margin-bottom: 30px;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: white;
+  margin-bottom: 30px;
 `
 const Header = styled.p`
-font-family: Inter;
-font-size: 18px;
-font-style: normal;
-font-weight: 600;
-line-height: 22px;
-letter-spacing: 0px;
-text-align: left;
-color: white;
-margin-bottom: 5px;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: white;
+  margin-bottom: 5px;
 `
 
 const Input = styled.div`
-background: rgba(0, 0, 0, 0.5);
-border: 1px solid #FFFFFF;
-box-sizing: border-box;
-border-radius: 8px;
-padding: 9px;
-color: white;
-font-family: Inter;
-font-size: 12px;
-font-style: normal;
-font-weight: 400;
-line-height: 15px;
-letter-spacing: 0px;
-text-align: left;
-margin-bottom: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 9px;
+  color: white;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-bottom: 15px;
 `
 const Content = styled.div`
   display: flex;
