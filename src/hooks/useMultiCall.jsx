@@ -9,20 +9,20 @@ import { useMemo, useState, useCallback, useEffect } from 'react'
 // import MULTICALL_ABI from '@/constants/abis/multicall.json'
 import useSingleContractCall from './useSingleContractCall'
 import { useMultiCallContract } from './useContract'
-import { useAsyncWeb3Call } from './'
-import { multicastChannel } from 'redux-saga'
+import { useWeb3Context } from '../context/web3'
 
 function useAggregateCallData(calls) {
   // calls: [{contract: Contract, method: String(methodName), args: [arguments]}, {...}]
   return useMemo(
     () =>
-      calls?.map(({ contract, method, args }) => {
+      {
+        return calls?.map(({ contract, method, args }) => {
         if (!contract || !contract.methods[method] || !args) return
         return {
           target: contract._address,
           callData: contract.methods[method](...args).encodeABI(),
         }
-      }),
+      })},
     [calls],
   )
 }
@@ -35,11 +35,11 @@ export function useDoubleMultiCallSingleMethod(callObjects) {
         return { contract, method, args }
       })
     })
-    multiCalls?.map((calls) => {
-      return calls?.map(({ contract, method, args }) => {
+    return multiCalls?.map((_calls) => {
+      return _calls?.map(({ contract, method, args }) => {
         if (!contract || !args) return
         return {
-          target: contract?.address,
+          target: contract?._address,
           callData: contract.methods[method](...args).encodeABI(),
         }
       })
@@ -50,12 +50,21 @@ export function useDoubleMultiCallSingleMethod(callObjects) {
       return {
         contract: multiCall,
         method: 'aggregate',
-        args: multiCall?.methods?.aggregate(multiCalls)?.encodeABI(),
+        args: [[{"target": multiCall._address, "callData": multiCall?.methods?.aggregate(multiCalls)?.encodeABI()}]],
       }
     })
   }, [firstLvlCalls, multiCall])
   const callData = useAggregateCallData(calls)
-  return useMultiCallResult(callData)
+  const rawResult = useMultiCallResult(callData)
+  const {web3} = useWeb3Context()
+  return useMemo(() => {
+    if(!rawResult || !web3) return []
+    return Object.values(rawResult[1]).map((res) => {
+      return web3.eth.abi.decodeParameters(['uint256', 'bytes[]'], res)
+    }).map((res) => {
+      return web3.eth.abi.decodeParameters(['uint256', 'bytes[]'], res[1][0])
+    })
+  }, [web3, rawResult])
 }
 
 function useMultiCallResult(callData) {

@@ -6,30 +6,14 @@ import Row from './Row'
 import { ButtonGradient } from './Button'
 import VoltIcon from '../../../assets/images/volt.svg'
 import { Link } from 'react-router-dom'
+import { useTotalClaim } from '../../../hooks/useVesting'
 // import { useVestingClaimableIds, useVestingTotalUnclaimedAmounts } from '../../../hooks/useVesting'
 // import { useVestingContract } from '../../../hooks/useContract'
 
 
 export default function ClaimVestingTableRow({ vestingAddress, name }) {
-//   const vestingContract = useVestingContract(vestingAddress, true)
-//   const userUnclaimedAmounts = useVestingTotalUnclaimedAmounts(vestingAddress, account ?? undefined)
-//   const claimableIds = useVestingClaimableIds(vestingAddress, account ?? undefined)
-
   const navigate = useNavigate()
-  const userUnclaimedAmounts = [123,123,123]
-  const claimableIds = ["0x1"]
-
-//   const onClaim = useCallback(
-//     async (id) => {
-//       if (!vestingContract || !id) return
-//       try {
-//         await vestingContract.claimVestedTokens(id)
-//       } catch (error) {
-//         console.error(error)
-//       }
-//     },
-//     [vestingContract]
-//   )
+  const totalClaim = useTotalClaim(vestingAddress)
 
   return (
     <Row
@@ -43,13 +27,10 @@ export default function ClaimVestingTableRow({ vestingAddress, name }) {
       <Text>{name}</Text>
       <Text display={'flex'} alignItems={'center'} marginLeft={'20px'}>
         <img src={VoltIcon} alt="" style={{ width: '25px', paddingBottom: '-8px', margin: 'auto' }} />
-        {parseInt(formatEther(userUnclaimedAmounts))}
-      </Text>
-      {claimableIds?.map((userVestingId, index) => (
+        {totalClaim.shiftedBy(-18).decimalPlaces(4).toString()}
         
-        // <Link to={'/unvest/' + vestingAddress}>
+      </Text>
         <ButtonGradient
-          key={userVestingId}
           width={'100px'}
           height={'32px'}
           padding={'0px'}
@@ -57,8 +38,6 @@ export default function ClaimVestingTableRow({ vestingAddress, name }) {
         >
           Claim
         </ButtonGradient>
-        // </Link>
-      ))}
     </Row>
   )
 }

@@ -6,6 +6,7 @@ import {
   useMultipleContractsSingleInterface,
 } from './useContract'
 import {
+  useDoubleMultiCallSingleMethod,
   useMultiCallSameData,
   useSingleCallMultiData,
   useSingleCallResult,
@@ -45,9 +46,7 @@ export function useVestingIds(vestingAddress) {
 export function useAllVestingIds() {
   const { account } = useWeb3Context()
   const vestingAddresses = useMemo(() => {
-    return Object.keys(TOKENSWAP_VESTING_ADDRESSES).map((key) => {
-      return TOKENSWAP_VESTING_ADDRESSES[key]
-    })
+    return Object.values(TOKENSWAP_VESTING_ADDRESSES)
   }, [TOKENSWAP_VESTING_ADDRESSES])
   const contracts = useMultipleContractsSingleInterface(
     vestingAddresses,
@@ -75,7 +74,9 @@ export function useClaims(vestingAddress) {
   ])
 
   const entries = useMemo(() => {
-    return new Map(claims.map((claim, i) => [vestingIds[i], Object.values(claim)]))
+    return new Map(
+      claims.map((claim, i) => [vestingIds[i], Object.values(claim)]),
+    )
   }, [claims, vestingIds])
 
   return useMemo(() => Object.fromEntries(entries), [entries])
@@ -84,15 +85,53 @@ export function useClaims(vestingAddress) {
 export function useTotalClaim(vestingAddress) {
   const claims = useClaims(vestingAddress)
   return useMemo(() => {
-    return Object.values(claims).reduce((mem, claim) => mem.plus(claim[1]), BigNumber(0))
+    return Object.values(claims).reduce(
+      (mem, claim) => mem.plus(claim[1]),
+      BigNumber(0),
+    )
   }, [claims])
 }
 
 export function useAllClaims() {
-  // TODO:
-  // const allVestingIds = useAllVestingIds()
-  // // vestingIds.forEach((elem) => {console.log(elem[0])})
-  // const
+  const { web3 } = useWeb3Context()
+  const allVestingIds = useAllVestingIds()
+  const argsArray = useMemo(
+    () => allVestingIds.map((res) => Object.values(res)[0].map((arg) => [arg])),
+    [allVestingIds],
+  )
+  const vestingAddresses = useMemo(
+    () => Object.values(TOKENSWAP_VESTING_ADDRESSES),
+    [],
+  )
+  const contracts = useMultipleContractsSingleInterface(
+    vestingAddresses,
+    VESTING_ABI,
+  )
+  const callObjects = useMemo(() => {
+    if (contracts?.length && contracts.length === argsArray?.length) {
+      return argsArray.map((args, i) => {
+        return {
+          contract: contracts[i],
+          method: 'calculateGrantClaim',
+          argsArray: args,
+        }
+      })
+    }
+    return []
+  }, [contracts, allVestingIds])
+  const rawResult = useDoubleMultiCallSingleMethod(callObjects)
+  const allClaims = useMemo(() => {
+    return rawResult.map((res) => {
+      return res[1]
+        .map((bytes) =>
+          web3.eth.abi.decodeParameters(['uint16', 'uint256'], bytes),
+        )
+        .reduce((mem, res) => {
+          return mem.plus(res[1])
+        }, BigNumber(0))
+    })
+  }, [rawResult, web3])
+  return allClaims
 }
 
 export function useClaim(vestingAddress, grantId) {
