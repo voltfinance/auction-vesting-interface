@@ -1,23 +1,41 @@
-import React from 'react'
-import wallet from '@/assets/images/wallet.svg'
-import useSwitchNetwork from '@/hooks/useSwitchNetwork'
-import { useWeb3Context } from '../../../context/web3'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import Row from './Row'
-
+import wallet from '@/assets/images/wallet.png'
+import { useWeb3Context } from '@/context/web3'
+import useSwitchNetwork from '@/hooks/useSwitchNetwork'
 
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
+  position: relative;
+  height: 100vh;
+`
+
+const Card = styled.div`
+  position: absolute;
+  top: 30%;
+  width: 428px;
+  display: flex;
+  margin: auto;
+  margin: 0.5em;
+  padding: 1rem;
+  background: #0B0C13;
+  border-radius: 10px;
+  color: white;
 `
 
 const Main = styled.div`
   position: relative;
-  padding: 14px;
-  border-radius: 5px;
-  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: auto;
+  border-radius: 10px;
+  height: 200px;
+  width: 100%;
   &:before {
     content: '';
     position: absolute;
@@ -26,64 +44,46 @@ const Main = styled.div`
     bottom: -17px;
     left: -17px;
     z-index: -1;
-    border-radius: 5px;
-    background: linear-gradient(
-      -91.13deg,
-      #f3fc1f -3.23%,
-      #f3fc1f 26.69%,
-      #3ad8a4 156.49%
-    );
+    border-radius: 10px;
+    background: linear-gradient(130.47deg, #3AD889 -6.17%, #F3FC1F 108.46%);
   }
 `
-const Card = styled.div`
-  display: flex;
-  margin: auto;
-  margin: 0.5em;
-  padding: 1rem;
-  background: black;
-  border-radius: 5px;
+
+const Text = styled.p`
+font-family: Inter;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+margin-bottom: 28px;
+text-align: center;
 `
 
-export default function ConnectOrSwitch() {
+export default function ClaimVestingTable() {
   const { account, chainId, toggleWeb3Modal } = useWeb3Context()
   const switchNetwork = useSwitchNetwork()
+
+  useEffect(()=>{
+
+  }, [account, chainId])
   return (
-    <>
-      <Wrapper>
-        <Row style={{ position: 'absolute', top: '100px', left: '35%' }}>
-          <Card
-            style={{
-              width: '100 %!important',
-              color: 'white',
-              alignContent: 'center',
-            }}
-          >
-            <Main
-              style={{
-                width: '100%',
-                margin: 'auto',
-                display: 'flex',
-                flexWrap: 'wrap',
-                flexDirection: 'column',
-              }}
-            >
-              <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
-                {!account ? (
-                  <button className="button-baseline" onClick={toggleWeb3Modal}>
-                    <img src={wallet} /> Connect wallet
+    <Wrapper>
+      <Card >
+        <Main>
+          <img src={wallet} width={'75px'} />       
+             <Text>Please connect your wallet</Text>
+             {!account ? (
+                  <button className="button--secondary" onClick={toggleWeb3Modal}>
+                    Connect wallet
                   </button>
                 ) : chainId !== 122 ? (
-                  <button className="button-baseline" onClick={switchNetwork}>
+                  <button className=" button--secondary" onClick={switchNetwork}>
                     Switch to Fuse
                   </button>
                 ) : (
                   <></>
                 )}
-              </div>
-            </Main>
-          </Card>
-        </Row>
-      </Wrapper>
-    </>
+        </Main>
+      </Card>
+    </Wrapper>
   )
 }
