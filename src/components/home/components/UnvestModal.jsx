@@ -215,7 +215,7 @@ export default function UnvestModal() {
                   alt=""
                   style={{
                     width: '177px',
-                    paddingBottom: '14px',
+                    padding: '14px',
                     margin: 'auto',
                   }}
                 />
@@ -230,27 +230,27 @@ export default function UnvestModal() {
               <img
                 src={Underline}
                 alt=""
-                style={{ width: '100%', margin: 'auto' }}
+                style={{ width: '100%', paddingTop: '16px', margin: 'auto' }}
               />
               <Volt>Volt: {firstClaimSum.decimalPlaces(4).toString()}</Volt>
               <img
                 src={Underline}
                 alt=""
-                style={{ width: '100%', margin: 'auto' }}
+                style={{ width: '100%', paddingBottom: '14px', margin: 'auto' }}
               />
               {Object.keys(firstClaims).map((key) => {
                 return (
                   <>
                     <ButtonGradient
                       maxWidth={'100%'}
-                      marginTop={'33px'}
+
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
                           .send({ from: account })
                       }}
                     >
-                      Claim {firstClaims[key].decimalPlaces(4).toString()}
+                      Claim
                     </ButtonGradient>
                   </>
                 )
@@ -269,7 +269,7 @@ export default function UnvestModal() {
                 alignItems: 'center'
               }}
             >
-              <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
+              <div style={{ display: 'flex', width: '100%', paddingTop: '16px', margin: 'auto' }}>
                 <img
                   src={SecondVesting}
                   alt=""
@@ -282,33 +282,33 @@ export default function UnvestModal() {
               <img
                 src={VoltIcon}
                 alt=""
-                style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
+                style={{ width: '65px', paddingBottom: '14px', margin: 'auto' }}
               />
               <p style={{ marginBottom: '21px' }}>Daily Volt Vesting</p>
               <img
                 src={Underline}
                 alt=""
-                style={{ width: '100%', margin: 'auto' }}
+                style={{ width: '100%', paddingTop: '12px', margin: 'auto' }}
               />
               <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
               <img
                 src={Underline}
                 alt=""
-                style={{ width: '100%', margin: 'auto' }}
+                style={{ width: '100%', paddingBottom: '14px', margin: 'auto' }}
               />
               {Object.keys(secondClaims).map((key) => {
                 return (
                   <>
                     <ButtonGradient
                       maxWidth={'100%'}
-                      marginTop={'33px'}
+
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
                           .send({ from: account })
                       }}
                     >
-                      Claim {secondClaims[key].decimalPlaces(4).toString()}
+                      Claim
                     </ButtonGradient>
                   </>
                 )
@@ -352,7 +352,7 @@ export default function UnvestModal() {
                   src={UnlockedTokens}
                   alt=""
                   style={{
-                    paddingBottom: '14px',
+                    padding: '14px',
                     margin: 'auto',
                   }}
                 />
@@ -367,27 +367,27 @@ export default function UnvestModal() {
               <img
                 src={Underline}
                 alt=""
-                style={{ width: '100%', margin: 'auto' }}
+                style={{ width: '100%', paddingTop: '16px', margin: 'auto' }}
               />
               <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
               <img
                 src={Underline}
                 alt=""
-                style={{ width: '100%', margin: 'auto' }}
+                style={{ width: '100%', paddingBottom: '14px', margin: 'auto' }}
               />
               {Object.keys(secondClaims).map((key) => {
                 return (
                   <>
                     <ButtonGradient
                       maxWidth={'100%'}
-                      marginTop={'33px'}
+
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
                           .send({ from: account })
                       }}
                     >
-                      Claim {secondClaims[key].decimalPlaces(4).toString()}
+                      Claim
                     </ButtonGradient>
                   </>
                 )
