@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text } from 'rebass'
 import ClaimVestingTableRow from './ClaimVestingRow'
@@ -100,6 +100,10 @@ export default function ClaimVestingTable() {
     [allVestingIdsRaw],
   )
 
+  useEffect(() => {
+
+  }, [vestings])
+
   return (
     <Wrapper>
       <Content>
@@ -132,25 +136,45 @@ export default function ClaimVestingTable() {
               flexWrap: 'wrap',
             }}
           >
-            {vestings?.length ? (<>
-              <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'} marginRight={'165px'}>
-                Round
-              </Text>
-              <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'}>
-                Unlocked
-              </Text>
-              {Object.keys(TOKENSWAP_VESTING_ADDRESSES).map((key, i) =>
-                vestings[i]?.length ? (
-                  <ClaimVestingTableRow
-                    key={key}
-                    name={'Ecosystem round ' + key}
-                    vestingAddress={TOKENSWAP_VESTING_ADDRESSES[key]}
-                  />
-                ) : null,
-              )
-              }
-            </>) : (
-              <Text color={'white'}>Loading</Text>
+            {vestings ? (
+
+              <>
+                {vestings[0]?.length == 0 & vestings[1]?.length == 0 & vestings[2]?.length == 0 & vestings[3]?.length == 0 ? (
+                  <>
+                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'20px'} textAlign={'center'} width={'100%'}>
+                      You have no tokens to claim
+                    </Text>
+                    <a
+                      rel='noreferrer noopener' target='_blank'
+                      href='https://app.voltage.finance/'
+                      style={{ margin: 'auto' }}
+                    >
+                      <button rel='noreferrer noopener' target='_blank' className='button-secondary' href='https://app.voltage.finance'>
+                        Open App →
+                      </button>
+                    </a>
+                  </>) : (
+                  <>
+                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'} marginRight={'165px'}>
+                      Round
+                    </Text>
+                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'}>
+                      Unlocked
+                    </Text>
+                    {Object.keys(TOKENSWAP_VESTING_ADDRESSES).map((key, i) =>
+                      vestings[i]?.length ? (
+                        <ClaimVestingTableRow
+                          key={key}
+                          name={'Ecosystem round ' + key}
+                          vestingAddress={TOKENSWAP_VESTING_ADDRESSES[key]}
+                        />
+                      ) : null,
+                    )
+                    }
+                  </>
+                )}</>
+            ) : (
+              <Text color={'white'}>Loading...</Text>
             )}
           </Main>
         </Card>
