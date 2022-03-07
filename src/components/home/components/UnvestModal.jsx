@@ -3,7 +3,7 @@ import { ButtonGradient } from './Button'
 import styled from 'styled-components'
 import VoltIcon from '@/assets/images/volt.svg'
 import Underline from '@/assets/images/underline.svg'
-import Row from './Row'
+import Row, { RowCenter } from './Row'
 import BigNumber from 'bignumber.js'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
@@ -19,18 +19,21 @@ import { useVestingContract } from '../../../hooks/useContract'
 import useSingleContractCall from '../../../hooks/useSingleContractCall'
 import { useWeb3Context } from '../../../context/web3'
 import ConnectOrSwitch from './ConnectOrSwitch'
+import info from '@/assets/images/info.png'
+
 // import {useB} from '@/hooks'
 
 const Wrapper = styled.div`
   width: 100%;
+  margin-top: 13%;
+  position: absolute;
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: center;
 `
 
 const Main = styled.div`
   position: relative;
-  padding: 14px;
   border-radius: 5px;
   min-height: 300px;
   &:before {
@@ -67,6 +70,22 @@ const Volt = styled.div`
   display: flex;
   padding: 6px;
   margin: auto;
+`
+const Info = styled.div`
+width: 440px;
+font-family: Inter;
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: 22px;
+letter-spacing: 0px;
+text-align: left;
+color: white;
+margin-right: 20px;
+> img {
+  padding-bottom: 4px;
+  padding-right: 7px
+}
 `
 
 export default function UnvestModal() {
@@ -137,6 +156,8 @@ export default function UnvestModal() {
                   display: 'flex',
                   flexWrap: 'wrap',
                   flexDirection: 'column',
+                  width: '218px',
+                  alignItems: 'center'
                 }}
               >
                 <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
@@ -153,10 +174,14 @@ export default function UnvestModal() {
 
   return (
     <Wrapper>
-      <Row style={{ position: 'absolute', top: '100px', left: '35%' }}>
+      <Info>
+         <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
+
+      </Info>
+      <div style={{display: 'flex'}}>
         <Card
           style={{
-            width: '100 %!important',
+            width: '256px!important',
             color: 'white',
             alignContent: 'center',
           }}
@@ -168,6 +193,8 @@ export default function UnvestModal() {
               display: 'flex',
               flexWrap: 'wrap',
               flexDirection: 'column',
+              width: '218px',
+              alignItems: 'center'
             }}
           >
             <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
@@ -218,7 +245,7 @@ export default function UnvestModal() {
             })}
           </Main>
         </Card>
-        <Card style={{ width: '100 %!important', color: 'white' }}>
+        <Card style={{ width: '256px!important', color: 'white' }}>
           <Main
             style={{
               width: '100%',
@@ -226,6 +253,8 @@ export default function UnvestModal() {
               display: 'flex',
               flexWrap: 'wrap',
               flexDirection: 'column',
+              width: '218px',
+              alignItems: 'center'
             }}
           >
             <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
@@ -233,7 +262,6 @@ export default function UnvestModal() {
                 src={SecondVesting}
                 alt=""
                 style={{
-                  width: '177px',
                   paddingBottom: '14px',
                   margin: 'auto',
                 }}
@@ -244,7 +272,7 @@ export default function UnvestModal() {
               alt=""
               style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
             />
-            Daily Volt Unvesting
+            <p style={{marginBottom: '21px'}}>Daily Volt Unvesting</p>
             <img
               src={Underline}
               alt=""
@@ -275,7 +303,7 @@ export default function UnvestModal() {
             })}
           </Main>
         </Card>
-      </Row>
+      </div>
       {/* <ButtonGradient
         // maxWidth={'100%'}
         maxWidth={'70px'}
