@@ -1,27 +1,23 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { ButtonGradient } from './Button'
 import styled from 'styled-components'
 import VoltIcon from '@/assets/images/volt.svg'
 import Underline from '@/assets/images/underline.svg'
-import Row, { RowCenter } from './Row'
+import Row from './Row'
 import BigNumber from 'bignumber.js'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
-  useAllClaims,
   useClaims,
-  useTotalClaim,
-  useC,
 } from '../../../hooks/useVesting'
 import FirstVesting from '@/assets/images/FirstVesting.svg'
 import SecondVesting from '@/assets/images/SecondVesting.svg'
+import UnlockedTokens from '@/assets/images/UnlockedTokens.svg'
 import { TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
 import { useVestingContract } from '../../../hooks/useContract'
-import useSingleContractCall from '../../../hooks/useSingleContractCall'
 import { useWeb3Context } from '../../../context/web3'
 import ConnectOrSwitch from './ConnectOrSwitch'
 import info from '@/assets/images/info.png'
 
-// import {useB} from '@/hooks'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -109,6 +105,7 @@ export default function UnvestModal() {
         : mem
     }, {})
   }, [claims])
+
   const firstClaimSum = useMemo(
     () =>
       Object.values(firstClaims).reduce(
@@ -117,6 +114,7 @@ export default function UnvestModal() {
       ),
     [firstClaims],
   )
+
   const secondClaims = useMemo(() => {
     if (!claims) return {}
     return Object.keys(claims).reduce((mem, key) => {
@@ -128,6 +126,7 @@ export default function UnvestModal() {
         })
     }, {})
   }, [claims])
+
   const secondClaimSum = useMemo(
     () =>
       Object.values(secondClaims).reduce(
@@ -136,7 +135,7 @@ export default function UnvestModal() {
       ),
     [secondClaims],
   )
-
+  console.log(vestingAddress);
   if (!isVestingAddress) {
     return (
       <>
@@ -172,146 +171,220 @@ export default function UnvestModal() {
   }
   if (!account || chainId !== 122) return (<ConnectOrSwitch />)
 
-  return (
-    <Wrapper>
-      <Info>
-        <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
+  if (vestingAddress !== '0xfa1d759e5B9Cb6675CF2Ac8F235ab4eedc78c42E') {
+    return (
+      <Wrapper>
+        <Info>
+          <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
 
-      </Info>
-      <div style={{ display: 'flex' }}>
-        <Card
-          style={{
-            width: '256px!important',
-            color: 'white',
-            alignContent: 'center',
-          }}
+        </Info>
+        <div style={{ display: 'flex' }}>
+          <Card
+            style={{
+              width: '256px!important',
+              color: 'white',
+              alignContent: 'center',
+            }}
+          >
+            <Main
+              style={{
+                width: '100%',
+                margin: 'auto',
+                display: 'flex',
+                flexWrap: 'wrap',
+                flexDirection: 'column',
+                width: '218px',
+                alignItems: 'center'
+              }}
+            >
+              <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
+                <img
+                  src={FirstVesting}
+                  alt=""
+                  style={{
+                    width: '177px',
+                    paddingBottom: '14px',
+                    margin: 'auto',
+                  }}
+                />
+              </div>
+              <img
+                src={VoltIcon}
+                alt=""
+                style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
+              />
+              Your Volt tokens
+              <br /> unlocked at TGE
+              <img
+                src={Underline}
+                alt=""
+                style={{ width: '100%', margin: 'auto' }}
+              />
+              <Volt>Volt: {firstClaimSum.decimalPlaces(4).toString()}</Volt>
+              <img
+                src={Underline}
+                alt=""
+                style={{ width: '100%', margin: 'auto' }}
+              />
+              {Object.keys(firstClaims).map((key) => {
+                return (
+                  <>
+                    <ButtonGradient
+                      maxWidth={'100%'}
+                      marginTop={'33px'}
+                      onClick={() => {
+                        vestingContract.methods
+                          .claimVestedTokens(key)
+                          .send({ from: account })
+                      }}
+                    >
+                      Claim {firstClaims[key].decimalPlaces(4).toString()}
+                    </ButtonGradient>
+                  </>
+                )
+              })}
+            </Main>
+          </Card>
+          <Card style={{ width: '256px!important', color: 'white' }}>
+            <Main
+              style={{
+                width: '100%',
+                margin: 'auto',
+                display: 'flex',
+                flexWrap: 'wrap',
+                flexDirection: 'column',
+                width: '218px',
+                alignItems: 'center'
+              }}
+            >
+              <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
+                <img
+                  src={SecondVesting}
+                  alt=""
+                  style={{
+                    paddingBottom: '14px',
+                    margin: 'auto',
+                  }}
+                />
+              </div>
+              <img
+                src={VoltIcon}
+                alt=""
+                style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
+              />
+              <p style={{ marginBottom: '21px' }}>Daily Volt Vesting</p>
+              <img
+                src={Underline}
+                alt=""
+                style={{ width: '100%', margin: 'auto' }}
+              />
+              <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
+              <img
+                src={Underline}
+                alt=""
+                style={{ width: '100%', margin: 'auto' }}
+              />
+              {Object.keys(secondClaims).map((key) => {
+                return (
+                  <>
+                    <ButtonGradient
+                      maxWidth={'100%'}
+                      marginTop={'33px'}
+                      onClick={() => {
+                        vestingContract.methods
+                          .claimVestedTokens(key)
+                          .send({ from: account })
+                      }}
+                    >
+                      Claim {secondClaims[key].decimalPlaces(4).toString()}
+                    </ButtonGradient>
+                  </>
+                )
+              })}
+            </Main>
+          </Card>
+        </div>
+        {/* <ButtonGradient
+          // maxWidth={'100%'}
+          maxWidth={'70px'}
+          marginBottom={'50px'}
+          onClick={() => navigate('/')}
         >
-          <Main
-            style={{
-              width: '100%',
-              margin: 'auto',
-              display: 'flex',
-              flexWrap: 'wrap',
-              flexDirection: 'column',
-              width: '218px',
-              alignItems: 'center'
-            }}
-          >
-            <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
+          Return
+        </ButtonGradient> */}
+      </Wrapper>
+    )
+  } else {
+    return (
+      <Wrapper>
+        <Info>
+          <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
+
+        </Info>
+        <div style={{ display: 'flex' }}>
+          <Card style={{ width: '256px!important', color: 'white' }}>
+            <Main
+              style={{
+                width: '100%',
+                margin: 'auto',
+                display: 'flex',
+                flexWrap: 'wrap',
+                flexDirection: 'column',
+                width: '218px',
+                alignItems: 'center'
+              }}
+            >
+              <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
+                <img
+                  src={UnlockedTokens}
+                  alt=""
+                  style={{
+                    paddingBottom: '14px',
+                    margin: 'auto',
+                  }}
+                />
+              </div>
               <img
-                src={FirstVesting}
+                src={VoltIcon}
                 alt=""
-                style={{
-                  width: '177px',
-                  paddingBottom: '14px',
-                  margin: 'auto',
-                }}
+                style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
               />
-            </div>
-            <img
-              src={VoltIcon}
-              alt=""
-              style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
-            />
-            Your Volt tokens
-            <br /> unvested at TGE
-            <img
-              src={Underline}
-              alt=""
-              style={{ width: '100%', margin: 'auto' }}
-            />
-            <Volt>Volt: {firstClaimSum.decimalPlaces(4).toString()}</Volt>
-            <img
-              src={Underline}
-              alt=""
-              style={{ width: '100%', margin: 'auto' }}
-            />
-            {Object.keys(firstClaims).map((key) => {
-              return (
-                <>
-                  <ButtonGradient
-                    maxWidth={'100%'}
-                    marginTop={'33px'}
-                    onClick={() => {
-                      vestingContract.methods
-                        .claimVestedTokens(key)
-                        .send({ from: account })
-                    }}
-                  >
-                    Claim {firstClaims[key].decimalPlaces(4).toString()}
-                  </ButtonGradient>
-                </>
-              )
-            })}
-          </Main>
-        </Card>
-        <Card style={{ width: '256px!important', color: 'white' }}>
-          <Main
-            style={{
-              width: '100%',
-              margin: 'auto',
-              display: 'flex',
-              flexWrap: 'wrap',
-              flexDirection: 'column',
-              width: '218px',
-              alignItems: 'center'
-            }}
-          >
-            <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
+              Your Volt tokens
+              <br /> unlocked at TGE
               <img
-                src={SecondVesting}
+                src={Underline}
                 alt=""
-                style={{
-                  paddingBottom: '14px',
-                  margin: 'auto',
-                }}
+                style={{ width: '100%', margin: 'auto' }}
               />
-            </div>
-            <img
-              src={VoltIcon}
-              alt=""
-              style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
-            />
-            <p style={{ marginBottom: '21px' }}>Daily Volt Unvesting</p>
-            <img
-              src={Underline}
-              alt=""
-              style={{ width: '100%', margin: 'auto' }}
-            />
-            <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
-            <img
-              src={Underline}
-              alt=""
-              style={{ width: '100%', margin: 'auto' }}
-            />
-            {Object.keys(secondClaims).map((key) => {
-              return (
-                <>
-                  <ButtonGradient
-                    maxWidth={'100%'}
-                    marginTop={'33px'}
-                    onClick={() => {
-                      vestingContract.methods
-                        .claimVestedTokens(key)
-                        .send({ from: account })
-                    }}
-                  >
-                    Claim {secondClaims[key].decimalPlaces(4).toString()}
-                  </ButtonGradient>
-                </>
-              )
-            })}
-          </Main>
-        </Card>
-      </div>
-      {/* <ButtonGradient
-        // maxWidth={'100%'}
-        maxWidth={'70px'}
-        marginBottom={'50px'}
-        onClick={() => navigate('/')}
-      >
-        Return
-      </ButtonGradient> */}
-    </Wrapper>
-  )
+              <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
+              <img
+                src={Underline}
+                alt=""
+                style={{ width: '100%', margin: 'auto' }}
+              />
+              {Object.keys(secondClaims).map((key) => {
+                return (
+                  <>
+                    <ButtonGradient
+                      maxWidth={'100%'}
+                      marginTop={'33px'}
+                      onClick={() => {
+                        vestingContract.methods
+                          .claimVestedTokens(key)
+                          .send({ from: account })
+                      }}
+                    >
+                      Claim {secondClaims[key].decimalPlaces(4).toString()}
+                    </ButtonGradient>
+                  </>
+                )
+              })}
+            </Main>
+          </Card>
+        </div>
+      </Wrapper>
+    )
+  }
+
+
 }

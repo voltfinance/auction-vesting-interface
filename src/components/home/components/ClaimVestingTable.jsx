@@ -7,6 +7,7 @@ import { useAllVestingIds } from '../../../hooks/useVesting'
 import check from '@/assets/images/checkmark.png'
 import info from '@/assets/images/info.png'
 
+
 const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
