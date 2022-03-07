@@ -71,8 +71,9 @@ export default function ClaimVestingTable() {
              <img src={volt} width={'100px'} />       
 
           <button
-          className='button button--primary'
+          className='button--secondary'
           onClick={addToken}
+          style={{height: '50px'}}
         >
           Add the VOLT token to wallet
         </button>
