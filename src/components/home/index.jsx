@@ -3,6 +3,7 @@ import lottie from 'lottie-web'
 import { useSelector } from 'react-redux'
 // import { createWeb3ReactRoot } from '@web3-react/core'
 import ClaimVoltModal from './components/ClaimVoltModal'
+import AddToken from './components/AddToken'
 import UnvestModal from './components/UnvestModal'
 import Header from './header'
 import { Route, Routes as Switch, BrowserRouter as Router } from 'react-router-dom'
@@ -63,6 +64,8 @@ const HomePage = () => {
                 element={<UnvestModal/>}
               />
               <Route exact path='/' element={<ClaimVoltModal/>} />
+              <Route exact path='/add' element={<AddToken/>} />
+
             </Switch>
             {/* <Footer /> */}
           </Router>

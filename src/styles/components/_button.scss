@@ -7,6 +7,25 @@
 
 
   &--primary {
+    text-align: center;
+    background: linear-gradient(93.58deg, #3AD889 -105.35%, #F3FC1F 103.54%);
+    color: black;
+    &:hover{
+      background: linear-gradient(95.27deg, #3AD889 -24.83%, #F3FC1F 131.84%);
+    }
+  }
+
+  &--secondary {
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0px;
+    min-height: 47px;
+    width: 100%;
+    border-radius: 5px;
+    text-align: center;
     background: linear-gradient(93.58deg, #3AD889 -105.35%, #F3FC1F 103.54%);
     color: black;
     &:hover{

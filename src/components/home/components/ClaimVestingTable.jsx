@@ -1,15 +1,20 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text } from 'rebass'
 import ClaimVestingTableRow from './ClaimVestingRow'
 import { TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
-import { useAllClaims, useAllVestingIds } from '../../../hooks/useVesting'
+import { useAllVestingIds } from '../../../hooks/useVesting'
+import check from '@/assets/images/checkmark.png'
+import info from '@/assets/images/info.png'
+
 
 const Wrapper = styled.div`
   width: 100%;
+  height: 100vh;
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
 `
 
 const Card = styled.div`
@@ -19,13 +24,12 @@ const Card = styled.div`
   padding: 1rem;
   background: black;
   border-radius: 5px;
+  color: white;
 `
 
 const Main = styled.div`
   position: relative;
-  padding: 14px;
   border-radius: 5px;
-  min-height: 300px;
   &:before {
     content: '';
     position: absolute;
@@ -43,7 +47,51 @@ const Main = styled.div`
     );
   }
 `
+const Info = styled.p`
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: white;
+  margin-bottom: 30px;
+`
+const Header = styled.p`
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: white;
+  margin-bottom: 5px;
+`
 
+const Input = styled.div`
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 9px;
+  color: white;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-bottom: 15px;
+`
+const Content = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-top: 7%;
+`
 export default function ClaimVestingTable() {
   // const allClaims = useAllClaims() // TODO: calculate the total sum of all claims and show it
   const allVestingIdsRaw = useAllVestingIds()
@@ -52,44 +100,85 @@ export default function ClaimVestingTable() {
     [allVestingIdsRaw],
   )
 
+  useEffect(() => {
+
+  }, [vestings])
+
   return (
     <Wrapper>
-      <Card
-        style={{
-          background: '#242637',
-          width: '470px',
-          position: 'absolute',
-          top: '100px',
-        }}
-      >
-        <Main
+      <Content>
+        <div style={{ width: '430px', marginRight: '40px' }}>
+          <Header>Address:</Header>
+          <Input> 0xB23ceB7a11a5aFf5F721B36759c7eB4A270cDDa6</Input>
+          <Header>Unlocked Tokens:</Header>
+          <Input>20500</Input>
+          <Header>Vested Tokens:</Header>
+          <Input>504000</Input>
+          <Info style={{ paddingTop: '20px' }}> <img src={info} style={{ paddingBottom: '4px' }}></img>    To claim your tokens you need to choose from which round that you purchased token do you want to claim.
+          </Info>
+          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your
+            unlocked tokens.</Info>
+          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your unlocked tokens. You should not have unlocked
+            tokens after claimming</Info>
+
+        </div>
+        <Card
           style={{
-            width: '100%',
-            margin: 'auto',
-            display: 'flex',
-            flexWrap: 'wrap',
+            background: '#242637',
           }}
         >
-          <Text fontSize={'24px'} color={'white'} marginBottom={'15px'}>
-            Round
-          </Text>
-          {vestings?.length ? (
-            Object.keys(TOKENSWAP_VESTING_ADDRESSES).map((key, i) =>
-              vestings[i]?.length ? (
-                <ClaimVestingTableRow
-                  key={key}
-                  name={key}
-                  vestingAddress={TOKENSWAP_VESTING_ADDRESSES[key]}
-                />
-              ) : (
-                <></>
-              ),
-            )
-          ) : (
-            <>Loading</>
-          )}
-        </Main>
-      </Card>
+
+          <Main
+            style={{
+              width: '480px',
+              margin: 'auto',
+              display: 'flex',
+              flexWrap: 'wrap',
+            }}
+          >
+            {vestings ? (
+
+              <>
+                {vestings[0]?.length == 0 & vestings[1]?.length == 0 & vestings[2]?.length == 0 & vestings[3]?.length == 0 ? (
+                  <>
+                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'20px'} textAlign={'center'} width={'100%'}>
+                      You have no tokens to claim
+                    </Text>
+                    <a
+                      rel='noreferrer noopener' target='_blank'
+                      href='https://app.voltage.finance/'
+                      style={{ margin: 'auto' }}
+                    >
+                      <button rel='noreferrer noopener' target='_blank' className='button-secondary' href='https://app.voltage.finance'>
+                        Open App →
+                      </button>
+                    </a>
+                  </>) : (
+                  <>
+                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'} marginRight={'165px'}>
+                      Round
+                    </Text>
+                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'}>
+                      Unlocked
+                    </Text>
+                    {Object.keys(TOKENSWAP_VESTING_ADDRESSES).map((key, i) =>
+                      vestings[i]?.length ? (
+                        <ClaimVestingTableRow
+                          key={key}
+                          name={'Ecosystem round ' + key}
+                          vestingAddress={TOKENSWAP_VESTING_ADDRESSES[key]}
+                        />
+                      ) : null,
+                    )
+                    }
+                  </>
+                )}</>
+            ) : (
+              <Text color={'white'}>Loading...</Text>
+            )}
+          </Main>
+        </Card>
+      </Content>
     </Wrapper>
   )
 }

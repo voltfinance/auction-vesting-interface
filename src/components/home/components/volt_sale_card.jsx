@@ -57,11 +57,11 @@ const VoltSaleCard = () => {
 
   const [modalIsOpen, setIsOpen] = React.useState(false)
 
-  function openModal () {
+  function openModal() {
     setIsOpen(false)
   }
 
-  function closeModal () {
+  function closeModal() {
     setIsOpen(false)
   }
 
@@ -167,13 +167,13 @@ const VoltSaleCard = () => {
               <button className='button button--primary' onClick={toggleWeb3Modal}>
                 Connect wallet
               </button>
-              )
+            )
             : chainId !== 122
               ? (
                 <button className='button button--primary' onClick={switchNetwork}>
                   Switch to Fuse
                 </button>
-                )
+              )
               : (
                 <button
                   className='button button--primary'
@@ -182,7 +182,7 @@ const VoltSaleCard = () => {
                 >
                   {inputError ?? 'Swap'}
                 </button>
-                )
+              )
         }
         <div className='info' onClick={openModal}>
           <span>

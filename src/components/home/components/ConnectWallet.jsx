@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import wallet from '@/assets/images/wallet.png'
 import { useWeb3Context } from '@/context/web3'
-import useSwitchNetwork from '@/hooks/useSwitchNetwork'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -59,29 +58,20 @@ text-align: center;
 `
 
 export default function ClaimVestingTable() {
-  const { account, chainId, toggleWeb3Modal } = useWeb3Context()
-  const switchNetwork = useSwitchNetwork()
-
-  useEffect(()=>{
-
-  }, [account, chainId])
+  const { toggleWeb3Modal } = useWeb3Context()
+  
   return (
     <Wrapper>
       <Card >
         <Main>
-          <img src={wallet} width={'75px'} />       
+          <img src={wallet} width={'55px'} />       
              <Text>Please connect your wallet</Text>
-             {!account ? (
-                  <button className="button--secondary" onClick={toggleWeb3Modal}>
-                    Connect wallet
-                  </button>
-                ) : chainId !== 122 ? (
-                  <button className=" button--secondary" onClick={switchNetwork}>
-                    Switch to Fuse
-                  </button>
-                ) : (
-                  <></>
-                )}
+          <button
+          className='button button--primary'
+          onClick={toggleWeb3Modal}
+        >
+          Connect your wallet
+        </button>
         </Main>
       </Card>
     </Wrapper>
