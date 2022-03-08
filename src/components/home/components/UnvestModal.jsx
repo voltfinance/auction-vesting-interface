@@ -268,7 +268,7 @@ export default function UnvestModal() {
                           .send({ from: account })
                       }}
                     >
-                      Claim
+                      Claim {firstClaims[key].decimalPlaces(4).toString()}
                     </ButtonGradient>
                   </>
                 )
@@ -332,7 +332,7 @@ export default function UnvestModal() {
                           .send({ from: account })
                       }}
                     >
-                      Claim
+                      Claim {secondClaims[key].decimalPlaces(4).toString()}
                     </ButtonGradient>
                   </>
                 )
@@ -413,7 +413,7 @@ export default function UnvestModal() {
                           .send({ from: account })
                       }}
                     >
-                      Claim
+                      Claim {secondRound[key].decimalPlaces(4).toString()}
                     </ButtonGradient>
                   </>
                 )
