@@ -6,18 +6,15 @@ import Underline from '@/assets/images/underline.svg'
 import Row from './Row'
 import BigNumber from 'bignumber.js'
 import { useParams } from 'react-router-dom'
-import {
-  useClaims,
-} from '../../../hooks/useVesting'
+import { useClaims } from '../../../hooks/useVesting'
 import FirstVesting from '@/assets/images/FirstVesting.svg'
 import SecondVesting from '@/assets/images/SecondVesting.svg'
 import UnlockedTokens from '@/assets/images/UnlockedTokens.svg'
-import { TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
+import { FINAL_ECOSYSTEM_ROUND, TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
 import { useVestingContract } from '../../../hooks/useContract'
 import { useWeb3Context } from '../../../context/web3'
 import ConnectOrSwitch from './ConnectOrSwitch'
 import info from '@/assets/images/info.png'
-
 
 const Wrapper = styled.div`
   width: 100%;
@@ -80,7 +77,7 @@ const Info = styled.div`
   margin-right: 20px;
   > img {
     padding-bottom: 4px;
-    padding-right: 7px
+    padding-right: 7px;
   }
 `
 const Link = styled.a`
@@ -91,7 +88,7 @@ const Link = styled.a`
   font-size: 18px;
   color: white;
   margin-bottom: 5px;
-  :hover{
+  :hover {
     text-decoration: underline;
   }
 `
@@ -106,14 +103,34 @@ export default function UnvestModal() {
   const vestingContract = useVestingContract(vestingAddress)
 
   const claims = useClaims(vestingAddress)
+
+  const allClaims = useMemo(() => {
+    if (!claims) return {}
+    return Object.keys(claims).reduce((mem, key) => {
+      return Object.defineProperty(mem, key, {
+        value: BigNumber(claims[key][1]).shiftedBy(-18),
+        enumerable: true,
+      })
+    }, {})
+  }, [claims])
+
+  const allClaimsSum = useMemo(
+    () =>
+      Object.values(allClaims).reduce(
+        (sum, claim) => sum.plus(claim),
+        BigNumber(0),
+      ),
+    [allClaims],
+  )
+
   const firstClaims = useMemo(() => {
     if (!claims) return {}
     return Object.keys(claims).reduce((mem, key) => {
       return key % 2
         ? Object.defineProperty(mem, key, {
-          value: BigNumber(claims[key][1]).shiftedBy(-18),
-          enumerable: true,
-        })
+            value: BigNumber(claims[key][1]).shiftedBy(-18),
+            enumerable: true,
+          })
         : mem
     }, {})
   }, [claims])
@@ -133,9 +150,9 @@ export default function UnvestModal() {
       return key % 2
         ? mem
         : Object.defineProperty(mem, key, {
-          value: BigNumber(claims[key][1]).shiftedBy(-18),
-          enumerable: true,
-        })
+            value: BigNumber(claims[key][1]).shiftedBy(-18),
+            enumerable: true,
+          })
     }, {})
   }, [claims])
 
@@ -147,7 +164,7 @@ export default function UnvestModal() {
       ),
     [secondClaims],
   )
-  console.log(vestingAddress);
+  console.log(vestingAddress)
   if (!isVestingAddress) {
     return (
       <>
@@ -168,7 +185,7 @@ export default function UnvestModal() {
                   flexWrap: 'wrap',
                   flexDirection: 'column',
                   width: '218px',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
                 <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
@@ -181,14 +198,16 @@ export default function UnvestModal() {
       </>
     )
   }
-  if (!account || chainId !== 122) return (<ConnectOrSwitch />)
+  if (!account || chainId !== 122) return <ConnectOrSwitch />
 
-  if (vestingAddress !== '0xfa1d759e5B9Cb6675CF2Ac8F235ab4eedc78c42E') {
+  if (vestingAddress !== FINAL_ECOSYSTEM_ROUND) {
     return (
       <Wrapper>
         <Link href="/">↤ Back</Link>
         <Info>
-          <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
+          <img src={info}></img>If you see two or more claimming buttons on the
+          same vesting option is because you bought more than once. Please claim
+          one at a time.
         </Info>
         <div style={{ display: 'flex' }}>
           <Card
@@ -206,7 +225,7 @@ export default function UnvestModal() {
                 flexWrap: 'wrap',
                 flexDirection: 'column',
                 width: '218px',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
@@ -243,7 +262,6 @@ export default function UnvestModal() {
                   <>
                     <ButtonGradient
                       maxWidth={'100%'}
-
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
@@ -266,10 +284,17 @@ export default function UnvestModal() {
                 flexWrap: 'wrap',
                 flexDirection: 'column',
                 width: '218px',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
-              <div style={{ display: 'flex', width: '100%', paddingTop: '16px', margin: 'auto' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  paddingTop: '16px',
+                  margin: 'auto',
+                }}
+              >
                 <img
                   src={SecondVesting}
                   alt=""
@@ -301,7 +326,6 @@ export default function UnvestModal() {
                   <>
                     <ButtonGradient
                       maxWidth={'100%'}
-
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
@@ -329,10 +353,13 @@ export default function UnvestModal() {
   } else {
     return (
       <Wrapper>
-        <Link href="/" style={{ paddingLeft: '280px' }}>↤ Back</Link>
+        <Link href="/" style={{ paddingLeft: '280px' }}>
+          ↤ Back
+        </Link>
         <Info>
-          <img src={info} ></img>If you see two or more claimming buttons on the same vesting option is because you bought more than once. Please claim one at a time.
-
+          <img src={info}></img>If you see two or more claimming buttons on the
+          same vesting option is because you bought more than once. Please claim
+          one at a time.
         </Info>
         <div style={{ display: 'flex' }}>
           <Card style={{ width: '256px!important', color: 'white' }}>
@@ -344,7 +371,7 @@ export default function UnvestModal() {
                 flexWrap: 'wrap',
                 flexDirection: 'column',
                 width: '218px',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
@@ -369,18 +396,17 @@ export default function UnvestModal() {
                 alt=""
                 style={{ width: '100%', paddingTop: '16px', margin: 'auto' }}
               />
-              <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
+              <Volt>Volt: {allClaimsSum.decimalPlaces(4).toString()}</Volt>
               <img
                 src={Underline}
                 alt=""
                 style={{ width: '100%', paddingBottom: '14px', margin: 'auto' }}
               />
-              {Object.keys(secondClaims).map((key) => {
+              {Object.keys(allClaims).map((key) => {
                 return (
                   <>
                     <ButtonGradient
                       maxWidth={'100%'}
-
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
