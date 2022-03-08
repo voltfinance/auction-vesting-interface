@@ -10,7 +10,7 @@ export default function useSingleContractCall (contract, method, args = []) {
   const memoArgs = useMemo(() => args, [args])
 
   const call = async () => {
-    if (!contract || !method || ready) return
+    if (!contract || !method || (result &&result.returnData.length)) return
 
     const callResult = await contract.methods[method](...memoArgs).call()
     setResult(callResult)
