@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useWeb3Context } from '../context/web3'
+import { VOLT_ADDRESS } from '../constants'
 
 export default function useAddToken () {
   const { web3 } = useWeb3Context()
@@ -13,7 +14,7 @@ export default function useAddToken () {
         params: {
           type: 'ERC20',
           options: {
-            address: '0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4',
+            address: VOLT_ADDRESS,
             symbol: 'VOLT',
             decimals: 18,
             image: ''
