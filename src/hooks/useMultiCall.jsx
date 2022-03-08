@@ -1,15 +1,27 @@
-// import { Interface, FunctionFragment } from '@ethersproject/abi'
-// import { Contract } from '@ethersproject/contracts'
-import { useMemo, useState, useCallback, useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { useActiveWeb3React } from './'
-// import { useBlockNumber } from './'
-
-// import { useWeb3Context } from "../context/web3";
-// import MULTICALL_ABI from '@/constants/abis/multicall.json'
-import useSingleContractCall from './useSingleContractCall'
+import { useMemo, useState, useEffect } from 'react'
 import { useMultiCallContract } from './useContract'
 import { useWeb3Context } from '../context/web3'
+
+export default function useSingleContractCall (contract, method, args = []) {
+  const { chainId } = useWeb3Context()
+
+  const [result, setResult] = useState(null)
+
+  const memoArgs = useMemo(() => args, [args])
+
+  const call = async () => {
+    if (!contract || !method || (result && result.returnData.length)) return
+
+    const callResult = await contract.methods[method](...memoArgs).call()
+    setResult(callResult)
+  }
+
+  useEffect(() => {
+    call()
+  }, [contract, method, memoArgs, chainId])
+
+  return result
+}
 
 function useAggregateCallData(calls) {
   // calls: [{contract: Contract, method: String(methodName), args: [arguments]}, {...}]
