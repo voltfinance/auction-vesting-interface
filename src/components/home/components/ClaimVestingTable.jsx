@@ -3,9 +3,11 @@ import styled from 'styled-components'
 import { Text } from 'rebass'
 import ClaimVestingTableRow from './ClaimVestingRow'
 import { TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
-import { useAllVestingIds } from '../../../hooks/useVesting'
+import { useAllVestingIds, useAllClaims } from '../../../hooks/useVesting'
 import check from '@/assets/images/checkmark.png'
 import info from '@/assets/images/info.png'
+import { useWeb3Context } from '../../../context/web3'
+import BigNumber from 'bignumber.js'
 
 
 const Wrapper = styled.div`
@@ -93,7 +95,10 @@ const Content = styled.div`
   margin-top: 7%;
 `
 export default function ClaimVestingTable() {
-  // const allClaims = useAllClaims() // TODO: calculate the total sum of all claims and show it
+  const allClaims = useAllClaims()
+  const unlockedTokens = useMemo(() => allClaims.reduce((mem, claim) => mem.plus(claim), BigNumber(0)), [allClaims])
+  const VestedTokens = BigNumber(0) // TODO: Calculate
+  const {account} = useWeb3Context()
   const allVestingIdsRaw = useAllVestingIds()
   const vestings = useMemo(
     () => allVestingIdsRaw.map((res) => Object.values(res)[0]),
@@ -109,11 +114,11 @@ export default function ClaimVestingTable() {
       <Content>
         <div style={{ width: '430px', marginRight: '40px' }}>
           <Header>Address:</Header>
-          <Input> 0xB23ceB7a11a5aFf5F721B36759c7eB4A270cDDa6</Input>
+          <Input> {account}</Input>
           <Header>Unlocked Tokens:</Header>
-          <Input>20500</Input>
-          <Header>Vested Tokens:</Header>
-          <Input>504000</Input>
+          <Input>{unlockedTokens.shiftedBy(-18).decimalPlaces(4).toString()}</Input>
+          {/* <Header>Vested Tokens:</Header>
+          <Input>{VestedTokens.decimalPlaces(4).toString()}</Input> */}
           <Info style={{ paddingTop: '20px' }}> <img src={info} style={{ paddingBottom: '4px' }}></img>    To claim your tokens you need to choose from which round that you purchased token do you want to claim.
           </Info>
           <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your
