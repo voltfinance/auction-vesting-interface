@@ -413,7 +413,7 @@ export default function UnvestModal() {
                           .send({ from: account })
                       }}
                     >
-                      Claim {secondRound[key].decimalPlaces(4).toString()}
+                      Claim {allClaimsSum.decimalPlaces(4).toString()}
                     </ButtonGradient>
                   </>
                 )
