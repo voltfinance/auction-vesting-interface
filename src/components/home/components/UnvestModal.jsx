@@ -280,7 +280,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account })
+                          .send({ from: account }).on('confirmation', (reciept) => {window.location.reload()})
                       }}
                     >
                       Claim {firstClaims[key].decimalPlaces(4).toString()}
@@ -344,7 +344,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account })
+                          .send({ from: account }).on('confirmation', (reciept) => {window.location.reload()})
                       }}
                     >
                       Claim {secondClaims[key].decimalPlaces(4).toString()}
@@ -423,7 +423,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account })
+                          .send({ from: account }).on('confirmation', (reciept) => {window.location.reload()})
                       }}
                     >
                       Claim {allClaimsSum.decimalPlaces(4).toString()}
