@@ -212,7 +212,7 @@ export default function ClaimVestingTable() {
           <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your
             unlocked tokens.</Info>
           <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your unlocked tokens. You should not have unlocked
-            tokens after claimming</Info>
+            tokens after claiming</Info>
         </div>
       </Content>
     </Wrapper>
