@@ -20,7 +20,7 @@ import info from '@/assets/images/info.png'
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 13%;
+  margin-top: 11%;
   position: absolute;
   display: flex;
   flex-direction:column;
@@ -85,10 +85,10 @@ const Info = styled.div`
   }
 `
 const Link = styled.a`
-  width: 100%;
+  width: 515px;
   display: flex;
   justify-content: flex-start;
-  margin-left: 3%;
+  margin-top: 1%;
   font-family: 'Inter';
   font-size: 18px;
   color: white;
@@ -145,9 +145,9 @@ export default function UnvestModal() {
       return key % 2
         ? mem
         : Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true,
+        })
     }, {})
   }, [claims])
 
@@ -165,9 +165,9 @@ export default function UnvestModal() {
     return Object.keys(claims).reduce((mem, key) => {
       return key % 2
         ? Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true,
+        })
         : mem
     }, {})
   }, [claims])
@@ -280,7 +280,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account }).on('confirmation', (reciept) => {window.location.reload()})
+                          .send({ from: account }).on('confirmation', (reciept) => { window.location.href = "/add" })
                       }}
                     >
                       Claim {firstClaims[key].decimalPlaces(4).toString()}
@@ -344,7 +344,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account }).on('confirmation', (reciept) => {window.location.reload()})
+                          .send({ from: account }).on('confirmation', (reciept) => { window.location.href = "/add" })
                       }}
                     >
                       Claim {secondClaims[key].decimalPlaces(4).toString()}
@@ -355,6 +355,7 @@ export default function UnvestModal() {
             </Main>
           </Card>
         </div>
+        <Link href="/">← Go Back </Link>
         {/* <ButtonGradient
           // maxWidth={'100%'}
           maxWidth={'70px'}
@@ -374,7 +375,7 @@ export default function UnvestModal() {
           same vesting option is because you bought more than once. Please claim
           one at a time.
         </Info>
-        <div style={{ display: 'flex', width: '540px'}}>
+        <div style={{ display: 'flex', width: '540px' }}>
           <Card style={{ width: '256px!important', color: 'white' }}>
             <Main
               style={{
@@ -423,7 +424,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account }).on('confirmation', (reciept) => {window.location.reload()})
+                          .send({ from: account }).on('confirmation', (reciept) => { window.location.href = "/add" })
                       }}
                     >
                       Claim {allClaimsSum.decimalPlaces(4).toString()}
@@ -434,6 +435,7 @@ export default function UnvestModal() {
             </Main>
           </Card>
         </div>
+        <Link href="/">← Go Back </Link>
       </Wrapper>
     )
   }

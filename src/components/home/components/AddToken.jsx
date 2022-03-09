@@ -59,13 +59,13 @@ const Text = styled.p`
   text-align: center;
 `
 const Link = styled.a`
-  width: 100%;
+  width: 110px;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   font-family: 'Inter';
   font-size: 18px;
   color: white;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   margin-right: 25%;
   :hover{
     text-decoration: underline;
@@ -117,6 +117,7 @@ export default function ClaimVestingTable() {
           </button>
         </Main>
       </Card>
+      <Link href="/">← Go Back </Link>
     </Wrapper>
   )
 }

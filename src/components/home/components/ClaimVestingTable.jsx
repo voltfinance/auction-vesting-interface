@@ -123,7 +123,7 @@ export default function ClaimVestingTable() {
 
   useEffect(() => {
 
-  }, [vestings])
+  }, [vestings, account])
 
   return (
     <Wrapper>
@@ -177,7 +177,7 @@ export default function ClaimVestingTable() {
                     </a>
                   </>) : (
                   <>
-                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'} marginRight={'165px'}>
+                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'} marginRight={'160px'}>
                       Round
                     </Text>
                     <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'}>

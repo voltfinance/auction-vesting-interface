@@ -299,7 +299,7 @@ export const ButtonGradientStyle = styled(Base)`
   background: linear-gradient(93.58deg, #3ad889 -105.35%, #f3fc1f 103.54%);
   border-radius: 5px;
   color: black !important;
-
+  margin-top: 5px;
   :disabled {
     cursor: not-allowed;
     background: linear-gradient(93.58deg, rgba(58, 216, 137, 0.3) -105.35%, rgba(243, 252, 31, 0.3) 103.54%);

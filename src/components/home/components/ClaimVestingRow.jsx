@@ -22,7 +22,7 @@ export default function ClaimVestingTableRow({ vestingAddress, name }) {
       borderRadius={'12px'}
       marginBottom={'5px'}
     >
-      <Text>{name}</Text>
+      <Text width={'185px'}>{name}</Text>
       <Text display={'flex'} alignItems={'center'} marginLeft={'20px'}>
         <img src={VoltIcon} alt="" style={{ width: '25px', paddingBottom: '-8px', margin: 'auto' }} />
         {totalClaim.shiftedBy(-18).decimalPlaces(4).toString()}
