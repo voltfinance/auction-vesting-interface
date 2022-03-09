@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import ClaimVoltModal from './components/ClaimVoltModal'
 import AddToken from './components/AddToken'
 import UnvestModal from './components/UnvestModal'
+import UnvestModalPrivate from './components/UnvestModalPrivate'
 import Header from './header'
 import { Route, Routes as Switch, BrowserRouter as Router } from 'react-router-dom'
 
@@ -62,6 +63,10 @@ const HomePage = () => {
               <Route
                 path="/unvest/:vestingAddress"
                 element={<UnvestModal/>}
+              />
+                 <Route
+                path="/private/:vestingAddress"
+                element={<UnvestModalPrivate/>}
               />
               <Route exact path='/' element={<ClaimVoltModal/>} />
               <Route exact path='/add' element={<AddToken/>} />
