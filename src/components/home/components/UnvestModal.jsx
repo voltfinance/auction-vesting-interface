@@ -220,7 +220,7 @@ export default function UnvestModal() {
       <Wrapper>
         <Title>Vesting Dasboard</Title>
         <Info>
-          <img src={info}></img>If you see two or more claimming buttons on the
+          <img src={info}></img>If you see two or more claiming buttons on the
           same vesting option is because you bought more than once. Please claim
           one at a time.
         </Info>
