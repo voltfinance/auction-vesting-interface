@@ -11,8 +11,7 @@ import FirstVesting from '@/assets/images/FirstVesting.svg'
 import SecondVesting from '@/assets/images/SecondVesting.svg'
 import UnlockedTokens from '@/assets/images/UnlockedTokens.svg'
 import {
-  FINAL_ECOSYSTEM_ROUND,
-  TOKENSWAP_VESTING_ADDRESSES,
+  TOKENSWAP_VESTING_ADDRESSES, TOKEN_SWAP_CONTRACTS,
 } from '../../../constants'
 import { useVestingContract } from '../../../hooks/useContract'
 import { useWeb3Context } from '../../../context/web3'
@@ -100,7 +99,7 @@ export default function UnvestModal() {
   const { account, chainId } = useWeb3Context()
   const { vestingAddress } = useParams()
   const isVestingAddress = useMemo(() => {
-    return Object.values(TOKENSWAP_VESTING_ADDRESSES).includes(vestingAddress)
+    return Object.keys(TOKEN_SWAP_CONTRACTS).includes(vestingAddress)
   }, [vestingAddress])
 
   const vestingContract = useVestingContract(vestingAddress)
@@ -167,7 +166,6 @@ export default function UnvestModal() {
       ),
     [secondClaims],
   )
-  console.log(vestingAddress)
   if (!isVestingAddress) {
     return (
       <>
@@ -203,7 +201,7 @@ export default function UnvestModal() {
   }
   if (!account || chainId !== 122) return <ConnectOrSwitch />
 
-  if (vestingAddress !== FINAL_ECOSYSTEM_ROUND) {
+  if (!TOKEN_SWAP_CONTRACTS[vestingAddress].isSingleVesting) {
     return (
       <Wrapper>
         <Link href="/">↤ Back</Link>

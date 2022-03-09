@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { TOKENSWAP_VESTING_ADDRESSES } from '../constants'
+import { TOKEN_SWAP_CONTRACTS } from '../constants'
 import BigNumber from 'bignumber.js'
 import {
   useVestingContract,
@@ -13,10 +13,22 @@ import {
 } from './useMultiCall'
 import { useWeb3Context } from '@/context/web3'
 import VESTING_ABI from '@/constants/abis/vesting.json'
-import useSingleContractCall from './useSingleContractCall'
+import TOKENSALE_ABI from '@/constants/abis/tokenSale.json'
 
 export function useDecodeSolidityUintArrays(bytesArray) {
   return useWeb3DecodeParameters(bytesArray, ['uint256[]'])
+}
+
+export function useAllVestedTokens() {
+  // const { account, web3 } = useWeb3Context()
+  // const tokenSaleAddresses = useMemo(
+  //   () =>
+  //     Object.values(TOKEN_SWAP_CONTRACTS).map((contract) => contract.tokenSale),
+  //   [TOKEN_SWAP_CONTRACTS],
+  // )
+  // const tokenSaleContracts = useMultipleContractsSingleInterface(tokenSaleAddresses, TOKENSALE_ABI)
+  // TODO: calculate
+  return []
 }
 
 function useWeb3DecodeParameters(bytesArray, argTypes) {
@@ -46,8 +58,8 @@ export function useVestingIds(vestingAddress) {
 export function useAllVestingIds() {
   const { account } = useWeb3Context()
   const vestingAddresses = useMemo(() => {
-    return Object.values(TOKENSWAP_VESTING_ADDRESSES)
-  }, [TOKENSWAP_VESTING_ADDRESSES])
+    return Object.keys(TOKEN_SWAP_CONTRACTS)
+  }, [TOKEN_SWAP_CONTRACTS])
   const contracts = useMultipleContractsSingleInterface(
     vestingAddresses,
     VESTING_ABI,
@@ -99,10 +111,7 @@ export function useAllClaims() {
     () => allVestingIds.map((res) => Object.values(res)[0].map((arg) => [arg])),
     [allVestingIds],
   )
-  const vestingAddresses = useMemo(
-    () => Object.values(TOKENSWAP_VESTING_ADDRESSES),
-    [],
-  )
+  const vestingAddresses = useMemo(() => Object.keys(TOKEN_SWAP_CONTRACTS), [])
   const contracts = useMultipleContractsSingleInterface(
     vestingAddresses,
     VESTING_ABI,

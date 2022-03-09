@@ -2,8 +2,8 @@ import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text } from 'rebass'
 import ClaimVestingTableRow from './ClaimVestingRow'
-import { TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
-import { useAllVestingIds, useAllClaims } from '../../../hooks/useVesting'
+import { TOKEN_SWAP_CONTRACTS } from '../../../constants'
+import { useAllVestingIds, useAllClaims, useAllVestedTokens } from '../../../hooks/useVesting'
 import check from '@/assets/images/checkmark.png'
 import info from '@/assets/images/info.png'
 import { useWeb3Context } from '../../../context/web3'
@@ -97,7 +97,8 @@ const Content = styled.div`
 export default function ClaimVestingTable() {
   const allClaims = useAllClaims()
   const unlockedTokens = useMemo(() => allClaims.reduce((mem, claim) => mem.plus(claim), BigNumber(0)), [allClaims])
-  const VestedTokens = BigNumber(0) // TODO: Calculate
+  const allVestedTokens = useAllVestedTokens()
+  const vestedTokens = useMemo(() => allVestedTokens.reduce((mem, cur) => mem.plus(cur), BigNumber(0)))
   const {account} = useWeb3Context()
   const allVestingIdsRaw = useAllVestingIds()
   const vestings = useMemo(
@@ -118,7 +119,7 @@ export default function ClaimVestingTable() {
           <Header>Unlocked Tokens:</Header>
           <Input>{unlockedTokens.shiftedBy(-18).decimalPlaces(4).toString()}</Input>
           {/* <Header>Vested Tokens:</Header>
-          <Input>{VestedTokens.decimalPlaces(4).toString()}</Input> */}
+          <Input>{vestedTokens.decimalPlaces(4).toString()}</Input> */}
           <Info style={{ paddingTop: '20px' }}> <img src={info} style={{ paddingBottom: '4px' }}></img>    To claim your tokens you need to choose from which round that you purchased token do you want to claim.
           </Info>
           <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your
@@ -166,12 +167,12 @@ export default function ClaimVestingTable() {
                     <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'}>
                       Unlocked
                     </Text>
-                    {Object.keys(TOKENSWAP_VESTING_ADDRESSES).map((key, i) =>
+                    {Object.values(TOKEN_SWAP_CONTRACTS).map(({address, name}, i) =>
                       vestings[i]?.length ? (
                         <ClaimVestingTableRow
-                          key={key}
-                          name={'Ecosystem round ' + key}
-                          vestingAddress={TOKENSWAP_VESTING_ADDRESSES[key]}
+                          key={address}
+                          name={name}
+                          vestingAddress={address}
                         />
                       ) : null,
                     )
