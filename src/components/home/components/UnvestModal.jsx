@@ -10,7 +10,10 @@ import { useClaims } from '../../../hooks/useVesting'
 import FirstVesting from '@/assets/images/FirstVesting.svg'
 import SecondVesting from '@/assets/images/SecondVesting.svg'
 import UnlockedTokens from '@/assets/images/UnlockedTokens.svg'
-import { FINAL_ECOSYSTEM_ROUND, TOKENSWAP_VESTING_ADDRESSES } from '../../../constants'
+import {
+  FINAL_ECOSYSTEM_ROUND,
+  TOKENSWAP_VESTING_ADDRESSES,
+} from '../../../constants'
 import { useVestingContract } from '../../../hooks/useContract'
 import { useWeb3Context } from '../../../context/web3'
 import ConnectOrSwitch from './ConnectOrSwitch'
@@ -127,11 +130,11 @@ export default function UnvestModal() {
     if (!claims) return {}
     return Object.keys(claims).reduce((mem, key) => {
       return key % 2
-        ? Object.defineProperty(mem, key, {
+        ? mem
+        : Object.defineProperty(mem, key, {
             value: BigNumber(claims[key][1]).shiftedBy(-18),
             enumerable: true,
           })
-        : mem
     }, {})
   }, [claims])
 
@@ -148,11 +151,11 @@ export default function UnvestModal() {
     if (!claims) return {}
     return Object.keys(claims).reduce((mem, key) => {
       return key % 2
-        ? mem
-        : Object.defineProperty(mem, key, {
+        ? Object.defineProperty(mem, key, {
             value: BigNumber(claims[key][1]).shiftedBy(-18),
             enumerable: true,
           })
+        : mem
     }, {})
   }, [claims])
 
