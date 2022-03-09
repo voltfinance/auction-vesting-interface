@@ -20,11 +20,12 @@ import info from '@/assets/images/info.png'
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 13%;
+  margin-top: 11%;
   position: absolute;
   display: flex;
-  flex-flow: row wrap;
+  flex-direction:column;
   justify-content: center;
+  align-items: center;
 `
 
 const Main = styled.div`
@@ -67,7 +68,7 @@ const Volt = styled.div`
   margin: auto;
 `
 const Info = styled.div`
-  width: 440px;
+  width: 500px;
   font-family: Inter;
   font-size: 18px;
   font-style: normal;
@@ -77,15 +78,17 @@ const Info = styled.div`
   text-align: left;
   color: white;
   margin-right: 20px;
+  margin-bottom: 15px;
   > img {
     padding-bottom: 4px;
     padding-right: 7px;
   }
 `
 const Link = styled.a`
-  width: 100%;
+  width: 515px;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  margin-top: 1%;
   font-family: 'Inter';
   font-size: 18px;
   color: white;
@@ -94,7 +97,18 @@ const Link = styled.a`
     text-decoration: underline;
   }
 `
-
+const Title = styled.p`
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 44px;
+  letter-spacing: 0px;
+  text-align: left;
+  width: 520px;
+  margin-bottom: 10px;
+  color: white;
+`
 export default function UnvestModal() {
   const { account, chainId } = useWeb3Context()
   const { vestingAddress } = useParams()
@@ -131,9 +145,9 @@ export default function UnvestModal() {
       return key % 2
         ? mem
         : Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true,
+        })
     }, {})
   }, [claims])
 
@@ -151,9 +165,9 @@ export default function UnvestModal() {
     return Object.keys(claims).reduce((mem, key) => {
       return key % 2
         ? Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true,
+        })
         : mem
     }, {})
   }, [claims])
@@ -204,7 +218,7 @@ export default function UnvestModal() {
   if (!TOKEN_SWAP_CONTRACTS[vestingAddress].isSingleVesting) {
     return (
       <Wrapper>
-        <Link href="/">↤ Back</Link>
+        <Title>Vesting Dasboard</Title>
         <Info>
           <img src={info}></img>If you see two or more claimming buttons on the
           same vesting option is because you bought more than once. Please claim
@@ -266,7 +280,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account })
+                          .send({ from: account }).on('confirmation', (reciept) => { window.location.href = "/add" })
                       }}
                     >
                       Claim {firstClaims[key].decimalPlaces(4).toString()}
@@ -330,7 +344,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account })
+                          .send({ from: account }).on('confirmation', (reciept) => { window.location.href = "/add" })
                       }}
                     >
                       Claim {secondClaims[key].decimalPlaces(4).toString()}
@@ -341,6 +355,7 @@ export default function UnvestModal() {
             </Main>
           </Card>
         </div>
+        <Link href="/">← Go Back </Link>
         {/* <ButtonGradient
           // maxWidth={'100%'}
           maxWidth={'70px'}
@@ -354,15 +369,13 @@ export default function UnvestModal() {
   } else {
     return (
       <Wrapper>
-        <Link href="/" style={{ paddingLeft: '280px' }}>
-          ↤ Back
-        </Link>
+        <Title>Vesting Dasboard</Title>
         <Info>
           <img src={info}></img>If you see two or more claimming buttons on the
           same vesting option is because you bought more than once. Please claim
           one at a time.
         </Info>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', width: '540px' }}>
           <Card style={{ width: '256px!important', color: 'white' }}>
             <Main
               style={{
@@ -411,7 +424,7 @@ export default function UnvestModal() {
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
-                          .send({ from: account })
+                          .send({ from: account }).on('confirmation', (reciept) => { window.location.href = "/add" })
                       }}
                     >
                       Claim {allClaimsSum.decimalPlaces(4).toString()}
@@ -422,6 +435,7 @@ export default function UnvestModal() {
             </Main>
           </Card>
         </div>
+        <Link href="/">← Go Back </Link>
       </Wrapper>
     )
   }

@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import volt from '@/assets/images/voltLarge.svg'
 import useAddToken from '@/hooks/useAddToken'
+import { useWeb3Context } from '../../../context/web3'
+import ConnectOrSwitch from '../components/ConnectOrSwitch'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -57,25 +59,47 @@ const Text = styled.p`
   text-align: center;
 `
 const Link = styled.a`
-  width: 100%;
+  width: 110px;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   font-family: 'Inter';
   font-size: 18px;
   color: white;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   margin-right: 25%;
   :hover{
     text-decoration: underline;
   }
 `
+const Title = styled.p`
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 44px;
+  letter-spacing: 0px;
+  text-align: center;
+  width: 520px;
+  margin-bottom: 10px;
+  color: white;
+`
 
 export default function ClaimVestingTable() {
   const addToken = useAddToken()
+  const {account} = useWeb3Context()
+  
+  useEffect(()=>{
+
+  }, [account])
+
+  if (!account) return (
+    <ConnectOrSwitch />
+  )
 
   return (
+    
     <Wrapper>
-      <Link href="/">↤ Back</Link>
+      <Title>Vesting Dashboard</Title>
       <Card >
         <Main>
           <div>
@@ -93,6 +117,7 @@ export default function ClaimVestingTable() {
           </button>
         </Main>
       </Card>
+      <Link href="/">← Go Back </Link>
     </Wrapper>
   )
 }
