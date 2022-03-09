@@ -118,8 +118,8 @@ export default function ClaimVestingTable() {
           <Input> {account}</Input>
           <Header>Unlocked Tokens:</Header>
           <Input>{unlockedTokens.shiftedBy(-18).decimalPlaces(4).toString()}</Input>
-          {/* <Header>Vested Tokens:</Header>
-          <Input>{vestedTokens.decimalPlaces(4).toString()}</Input> */}
+          <Header>Vested Tokens:</Header>
+          <Input>{vestedTokens.shiftedBy(-18).decimalPlaces(4).toString()}</Input>
           <Info style={{ paddingTop: '20px' }}> <img src={info} style={{ paddingBottom: '4px' }}></img>    To claim your tokens you need to choose from which round that you purchased token do you want to claim.
           </Info>
           <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your

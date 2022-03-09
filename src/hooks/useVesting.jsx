@@ -20,15 +20,42 @@ export function useDecodeSolidityUintArrays(bytesArray) {
 }
 
 export function useAllVestedTokens() {
-  // const { account, web3 } = useWeb3Context()
-  // const tokenSaleAddresses = useMemo(
-  //   () =>
-  //     Object.values(TOKEN_SWAP_CONTRACTS).map((contract) => contract.tokenSale),
-  //   [TOKEN_SWAP_CONTRACTS],
-  // )
-  // const tokenSaleContracts = useMultipleContractsSingleInterface(tokenSaleAddresses, TOKENSALE_ABI)
-  // TODO: calculate
-  return []
+  const { web3 } = useWeb3Context()
+  const allVestingIds = useAllVestingIds()
+  const argsArray = useMemo(
+    () => allVestingIds.map((res) => Object.values(res)[0].map((arg) => [arg])),
+    [allVestingIds],
+  )
+  const vestingAddresses = useMemo(() => Object.keys(TOKEN_SWAP_CONTRACTS), [])
+  const contracts = useMultipleContractsSingleInterface(
+    vestingAddresses,
+    VESTING_ABI,
+  )
+  const callObjects = useMemo(() => {
+    if (contracts?.length && contracts.length === argsArray?.length) {
+      return argsArray.map((args, i) => {
+        return {
+          contract: contracts[i],
+          method: 'tokenGrants',
+          argsArray: args,
+        }
+      })
+    }
+    return []
+  }, [contracts, allVestingIds])
+  const rawResult = useDoubleMultiCallSingleMethod(callObjects)
+  const allVestings = useMemo(() => {
+    return rawResult.map((res) => {
+      return res[1]
+        .map((bytes) =>
+          web3.eth.abi.decodeParameters(['uint256', 'uint256', 'uint16', 'uint16', 'uint16', 'uint256', 'address'], bytes),
+        )
+        .reduce((mem, res) => {
+          return mem.plus(res[1]).minus(res[5])
+        }, BigNumber(0))
+    })
+  }, [rawResult, web3])
+  return allVestings
 }
 
 function useWeb3DecodeParameters(bytesArray, argTypes) {
