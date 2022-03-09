@@ -7,15 +7,15 @@ import useSwitchNetwork from '@/hooks/useSwitchNetwork'
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
   position: relative;
   height: 100vh;
 `
 
 const Card = styled.div`
-  position: absolute;
-  top: 30%;
   width: 428px;
   display: flex;
   margin: auto;
@@ -57,6 +57,18 @@ font-size: 24px;
 margin-bottom: 28px;
 text-align: center;
 `
+const Title = styled.p`
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 44px;
+  letter-spacing: 0px;
+  text-align: center;
+  width: 520px;
+  margin-bottom: 10px;
+  color: white;
+`
 
 export default function ClaimVestingTable() {
   const { account, chainId, toggleWeb3Modal } = useWeb3Context()
@@ -67,6 +79,7 @@ export default function ClaimVestingTable() {
   }, [account, chainId])
   return (
     <Wrapper>
+      <Title>Vesting Dashboard</Title>
       <Card >
         <Main>
           <img src={wallet} width={'75px'} />       

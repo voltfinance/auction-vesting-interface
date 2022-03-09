@@ -61,12 +61,13 @@ const Info = styled.p`
   margin-bottom: 30px;
 `
 const Header = styled.p`
-  font-family: Inter;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 22px;
-  letter-spacing: 0px;
+font-family: Inter;
+font-size: 14px;
+font-style: normal;
+font-weight: 600;
+line-height: 17px;
+letter-spacing: 0px;
+text-align: left;
   text-align: left;
   color: white;
   margin-bottom: 5px;
@@ -87,19 +88,33 @@ const Input = styled.div`
   letter-spacing: 0px;
   text-align: left;
   margin-bottom: 15px;
+  width: 100%;
 `
 const Content = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   margin-top: 7%;
+  width: 480px;
+`
+const Title = styled.p`
+font-family: Inter;
+font-size: 36px;
+font-style: normal;
+font-weight: 700;
+line-height: 44px;
+letter-spacing: 0px;
+text-align: left;
+width: 100%;
+margin-bottom: 10px;
+color: white;
 `
 export default function ClaimVestingTable() {
   const allClaims = useAllClaims()
   const unlockedTokens = useMemo(() => allClaims.reduce((mem, claim) => mem.plus(claim), BigNumber(0)), [allClaims])
   const allVestedTokens = useAllVestedTokens()
   const vestedTokens = useMemo(() => allVestedTokens.reduce((mem, cur) => mem.plus(cur), BigNumber(0)))
-  const {account} = useWeb3Context()
+  const { account } = useWeb3Context()
   const allVestingIdsRaw = useAllVestingIds()
   const vestings = useMemo(
     () => allVestingIdsRaw.map((res) => Object.values(res)[0]),
@@ -113,20 +128,21 @@ export default function ClaimVestingTable() {
   return (
     <Wrapper>
       <Content>
-        <div style={{ width: '430px', marginRight: '40px' }}>
+        <Title>Vesting Dasbooard</Title>
+        <div style={{ width: '100%' }}>
           <Header>Address:</Header>
           <Input> {account}</Input>
-          <Header>Unlocked Tokens:</Header>
-          <Input>{unlockedTokens.shiftedBy(-18).decimalPlaces(4).toString()}</Input>
-          <Header>Vested Tokens:</Header>
-          <Input>{vestedTokens.shiftedBy(-18).decimalPlaces(4).toString()}</Input>
-          <Info style={{ paddingTop: '20px' }}> <img src={info} style={{ paddingBottom: '4px' }}></img>    To claim your tokens you need to choose from which round that you purchased token do you want to claim.
-          </Info>
-          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your
-            unlocked tokens.</Info>
-          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your unlocked tokens. You should not have unlocked
-            tokens after claimming</Info>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+            <div style={{ width: '49%' }}>
+              <Header>Unlocked Tokens:</Header>
+              <Input>{unlockedTokens.shiftedBy(-18).decimalPlaces(4).toString()}</Input>
+            </div>
 
+            <div style={{ width: '49%' }}>
+              <Header>Vested Tokens:</Header>
+              <Input>{vestedTokens.shiftedBy(-18).decimalPlaces(4).toString()}</Input>
+            </div>
+          </div>
         </div>
         <Card
           style={{
@@ -136,7 +152,7 @@ export default function ClaimVestingTable() {
 
           <Main
             style={{
-              width: '480px',
+              width: '448px',
               margin: 'auto',
               display: 'flex',
               flexWrap: 'wrap',
@@ -167,7 +183,7 @@ export default function ClaimVestingTable() {
                     <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'}>
                       Unlocked
                     </Text>
-                    {Object.values(TOKEN_SWAP_CONTRACTS).map(({address, name}, i) =>
+                    {Object.values(TOKEN_SWAP_CONTRACTS).map(({ address, name }, i) =>
                       vestings[i]?.length ? (
                         <ClaimVestingTableRow
                           key={address}
@@ -182,8 +198,17 @@ export default function ClaimVestingTable() {
             ) : (
               <Text color={'white'}>Loading...</Text>
             )}
+
           </Main>
         </Card>
+        <div>
+          <Info style={{ paddingTop: '20px' }}> <img src={info} style={{ paddingBottom: '4px' }}></img>    To claim your tokens you need to choose from which round that you purchased token do you want to claim.
+          </Info>
+          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your
+            unlocked tokens.</Info>
+          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your unlocked tokens. You should not have unlocked
+            tokens after claimming</Info>
+        </div>
       </Content>
     </Wrapper>
   )
