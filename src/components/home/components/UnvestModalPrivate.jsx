@@ -221,7 +221,7 @@ export default function UnvestModal() {
               flexWrap: 'wrap',
               flexDirection: 'column',
               width: '218px',
-              height: '319px',
+              // height: '319px',
               alignItems: 'center',
             }}
           >
@@ -285,7 +285,7 @@ export default function UnvestModal() {
               flexWrap: 'wrap',
               flexDirection: 'column',
               width: '218px',
-              height: '319px',
+              // height: '319px',
               alignItems: 'center',
             }}
           >
@@ -341,14 +341,6 @@ export default function UnvestModal() {
         </Card>
       </div>
       <Link href="/">← Go Back </Link>
-      {/* <ButtonGradient
-          // maxWidth={'100%'}
-          maxWidth={'70px'}
-          marginBottom={'50px'}
-          onClick={() => navigate('/')}
-        >
-          Return
-        </ButtonGradient> */}
     </Wrapper>
   )
 }

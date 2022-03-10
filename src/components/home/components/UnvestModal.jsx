@@ -302,7 +302,7 @@ export default function UnvestModal() {
               })}
             </Main>
           </Card>
-          {new Date() >= new Date('Fri Mar 11 2022 9:00') ? (
+          {new Date() < new Date('Fri Mar 11 2022 9:00') ? (
             <Card style={{ width: '256px!important', color: 'white' }}>
               <Main
                 style={{
@@ -341,7 +341,7 @@ export default function UnvestModal() {
                     margin: 'auto',
                   }}
                 />
-                <p style={{ marginBottom: '21px' }}>Daily Volt Vesting</p>
+                <p style={{ marginBottom: '21px' }}>Daily Volt unesting</p>
                 <img
                   src={Underline}
                   alt=""
