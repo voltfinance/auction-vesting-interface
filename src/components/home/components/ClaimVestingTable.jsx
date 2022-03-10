@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text } from 'rebass'
 import ClaimVestingTableRow from './ClaimVestingRow'
@@ -116,18 +116,14 @@ export default function ClaimVestingTable() {
   const vestedTokens = useMemo(() => allVestedTokens.reduce((mem, cur) => mem.plus(cur), BigNumber(0)))
   const { account } = useWeb3Context()
   const allVestingIdsRaw = useAllVestingIds()
-  const [prevAccount, setPrevAccount] = useState(account)
   const vestings = useMemo(
     () => allVestingIdsRaw.map((res) => Object.values(res)[0]),
     [allVestingIdsRaw],
   )
 
   useEffect(() => {
-    if (account !== prevAccount) {
-      setPrevAccount(account)
-      window.location.reload()
-    }
-  }, [vestings, account, prevAccount])
+
+  }, [vestings, account])
 
   return (
     <Wrapper>
@@ -181,18 +177,17 @@ export default function ClaimVestingTable() {
                     </a>
                   </>) : (
                   <>
-                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'} marginRight={'170px'}>
+                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'} marginRight={'160px'}>
                       Round
                     </Text>
                     <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'}>
                       Unlocked
                     </Text>
-                    {Object.values(TOKEN_SWAP_CONTRACTS).map(({ address, name, isPrivate }, i) =>
+                    {Object.values(TOKEN_SWAP_CONTRACTS).map(({ address, name }, i) =>
                       vestings[i]?.length ? (
                         <ClaimVestingTableRow
                           key={address}
                           name={name}
-                          isPrivate={isPrivate}
                           vestingAddress={address}
                         />
                       ) : null,
@@ -212,7 +207,7 @@ export default function ClaimVestingTable() {
           <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your
             unlocked tokens.</Info>
           <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your unlocked tokens. You should not have unlocked
-            tokens after claiming</Info>
+            tokens after claimming</Info>
         </div>
       </Content>
     </Wrapper>
