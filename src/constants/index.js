@@ -33,6 +33,13 @@ export const TOKEN_SWAP_CONTRACTS = {
     isPrivate: false,
     isSingleVesting: true
   },
+  "0xe67C19AeC0436DcE03E2420d5361027eB233af3B": {
+    name: "Private Round",
+    address: "0xe67C19AeC0436DcE03E2420d5361027eB233af3B",
+    tokenSale: "",
+    isPrivate: false,
+    isSingleVesting: true
+  },
 
 }
 
