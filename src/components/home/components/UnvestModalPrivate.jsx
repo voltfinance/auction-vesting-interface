@@ -5,7 +5,7 @@ import VoltIcon from '@/assets/images/volt.svg'
 import Underline from '@/assets/images/underline.svg'
 import Row from './Row'
 import BigNumber from 'bignumber.js'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useClaims } from '../../../hooks/useVesting'
 import TGE from '@/assets/images/tge.svg'
 import Vested from '@/assets/images/Vested.svg'
@@ -111,6 +111,7 @@ const Title = styled.p`
 export default function UnvestModal() {
   const { account, chainId } = useWeb3Context()
   const { vestingAddress } = useParams()
+  const navigate = useNavigate()
   const isVestingAddress = useMemo(() => {
     return Object.keys(TOKEN_SWAP_CONTRACTS).includes(vestingAddress)
   }, [vestingAddress])
@@ -211,6 +212,9 @@ export default function UnvestModal() {
         </Wrapper>
       </>
     )
+  }
+  if (!TOKEN_SWAP_CONTRACTS[vestingAddress].isPrivate){
+    navigate(`/unvest/${vestingAddress}`)
   }
   if (!account || chainId !== 122) return <ConnectOrSwitch />
 
