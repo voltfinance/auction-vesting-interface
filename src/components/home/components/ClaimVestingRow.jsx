@@ -34,7 +34,7 @@ export default function ClaimVestingTableRow({ vestingAddress, name, isPrivate }
           padding={'0px'}
           onClick={() => {{isPrivate ? navigate(`/private/${vestingAddress}`) : navigate(`/unvest/${vestingAddress}`)}}}
         >
-          Claim {isPrivate}
+          Claim
         </ButtonGradient>
     </Row>
   )
