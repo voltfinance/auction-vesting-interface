@@ -124,9 +124,9 @@ export default function UnvestModal() {
       return key % 2
         ? mem
         : Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true,
+        })
     }, {})
   }, [claims])
 
@@ -144,9 +144,9 @@ export default function UnvestModal() {
     return Object.keys(claims).reduce((mem, key) => {
       return key % 2
         ? Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true,
+        })
         : mem
     }, {})
   }, [claims])
@@ -205,7 +205,11 @@ export default function UnvestModal() {
         same vesting option is because you bought more than once. Please claim
         one at a time.
       </Info>
-      <div style={{ display: 'flex' }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'flex-start',
+        width: '540px',
+      }}>
         <Card
           style={{
             width: '256px!important',
@@ -276,69 +280,71 @@ export default function UnvestModal() {
             })}
           </Main>
         </Card>
-        <Card style={{ width: '256px!important', color: 'white' }}>
-          <Main
-            style={{
-              width: '100%',
-              margin: 'auto',
-              display: 'flex',
-              flexWrap: 'wrap',
-              flexDirection: 'column',
-              width: '218px',
-              // height: '319px',
-              alignItems: 'center',
-            }}
-          >
-            <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
+        {new Date() >= new Date('Fri Mar 11 2022 9:00') ? (
+          <Card style={{ width: '256px!important', color: 'white' }}>
+            <Main
+              style={{
+                width: '100%',
+                margin: 'auto',
+                display: 'flex',
+                flexWrap: 'wrap',
+                flexDirection: 'column',
+                width: '218px',
+                // height: '319px',
+                alignItems: 'center',
+              }}
+            >
+              <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
+                <img
+                  src={Vested}
+                  alt=""
+                  style={{
+                    padding: '14px 14px 31px',
+                    margin: 'auto',
+                  }}
+                />
+              </div>
               <img
-                src={Vested}
+                src={VoltIcon}
                 alt=""
-                style={{
-                  padding: '14px 14px 31px',
-                  margin: 'auto',
-                }}
+                style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
               />
-            </div>
-            <img
-              src={VoltIcon}
-              alt=""
-              style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
-            />
-            Daily volt
-            <br /> unvesting
-            <img
-              src={Underline}
-              alt=""
-              style={{ width: '100%', paddingTop: '16px', margin: 'auto' }}
-            />
-            <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
-            <img
-              src={Underline}
-              alt=""
-              style={{ width: '100%', paddingBottom: '14px', margin: 'auto' }}
-            />
-            {Object.keys(secondClaims).map((key) => {
-              return (
-                <>
-                  <ButtonGradient
-                    maxWidth={'100%'}
-                    onClick={() => {
-                      vestingContract.methods
-                        .claimVestedTokens(key)
-                        .send({ from: account })
-                        .on('confirmation', (reciept) => {
-                          window.location.href = '/add'
-                        })
-                    }}
-                    style={{ marginTop: '5px' }}
-                  >
-                    Claim {secondClaims[key].decimalPlaces(4).toString()}
-                  </ButtonGradient>
-                </>
-              )
-            })}
-          </Main>
-        </Card>
+              Daily volt
+              <br /> unvesting
+              <img
+                src={Underline}
+                alt=""
+                style={{ width: '100%', paddingTop: '16px', margin: 'auto' }}
+              />
+              <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
+              <img
+                src={Underline}
+                alt=""
+                style={{ width: '100%', paddingBottom: '14px', margin: 'auto' }}
+              />
+              {Object.keys(secondClaims).map((key) => {
+                return (
+                  <>
+                    <ButtonGradient
+                      maxWidth={'100%'}
+                      onClick={() => {
+                        vestingContract.methods
+                          .claimVestedTokens(key)
+                          .send({ from: account })
+                          .on('confirmation', (reciept) => {
+                            window.location.href = '/add'
+                          })
+                      }}
+                      style={{ marginTop: '5px' }}
+                    >
+                      Claim {secondClaims[key].decimalPlaces(4).toString()}
+                    </ButtonGradient>
+                  </>
+                )
+              })}
+            </Main>
+          </Card>
+        ) : null}
       </div>
       <Link href="/">← Go Back </Link>
     </Wrapper>
