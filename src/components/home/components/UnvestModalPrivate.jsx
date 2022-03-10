@@ -294,7 +294,7 @@ export default function UnvestModal() {
                 src={Vested}
                 alt=""
                 style={{
-                  padding: '14px 14px 30px',
+                  padding: '14px 14px 31px',
                   margin: 'auto',
                 }}
               />
