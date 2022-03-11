@@ -165,7 +165,7 @@ export default function ClaimVestingTable () {
               ? (
 
                 <>
-                  {vestings[0]?.length == 0 & vestings[1]?.length == 0 & vestings[2]?.length == 0 & vestings[3]?.length == 0
+                  {vestings.reduce((len, vesting) => vesting?.length + len, 0) === 0
                     ? (
                       <>
                         <Text fontFamily='Inter' fontWeight='600' fontSize='24px' color='white' marginBottom='20px' textAlign='center' width='100%'>
