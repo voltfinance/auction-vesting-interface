@@ -57,21 +57,21 @@ margin-bottom: 28px;
 text-align: center;
 `
 
-export default function ClaimVestingTable() {
+export default function ClaimVestingTable () {
   const { toggleWeb3Modal } = useWeb3Context()
-  
+
   return (
     <Wrapper>
-      <Card >
+      <Card>
         <Main>
-          <img src={wallet} width={'55px'} />       
-             <Text>Please connect your wallet</Text>
+          <img src={wallet} width='55px' />
+          <Text>Please connect your wallet</Text>
           <button
-          className='button button--primary'
-          onClick={toggleWeb3Modal}
-        >
-          Connect your wallet
-        </button>
+            className='button button--primary'
+            onClick={toggleWeb3Modal}
+          >
+            Connect your wallet
+          </button>
         </Main>
       </Card>
     </Wrapper>

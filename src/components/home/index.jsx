@@ -27,7 +27,7 @@ const HomePage = () => {
         container: smokeRef.current,
         renderer: 'svg',
         autoplay: true,
-        loop: true,
+        loop: true
       })
     }
   }, [])
@@ -39,7 +39,7 @@ const HomePage = () => {
         container: lightingRef.current,
         renderer: 'svg',
         autoplay: animate,
-        loop: false,
+        loop: false
       })
     }
   }, [animate])
@@ -50,30 +50,30 @@ const HomePage = () => {
         animationData: starsAnimationData,
         container: starsRef.current,
         renderer: 'svg',
-        loop: true,
+        loop: true
       })
     }
   }, [])
 
   return (
     <>
-          <Router>
-            <Header />
-            <Switch>
-              <Route
-                path="/unvest/:vestingAddress"
-                element={<UnvestModal/>}
-              />
-                 <Route
-                path="/private/:vestingAddress"
-                element={<UnvestModalPrivate/>}
-              />
-              <Route exact path='/' element={<ClaimVoltModal/>} />
-              <Route exact path='/add' element={<AddToken/>} />
+      <Router>
+        <Header />
+        <Switch>
+          <Route
+            path='/unvest/:vestingAddress'
+            element={<UnvestModal />}
+          />
+          <Route
+            path='/private/:vestingAddress'
+            element={<UnvestModalPrivate />}
+          />
+          <Route exact path='/' element={<ClaimVoltModal />} />
+          <Route exact path='/add' element={<AddToken />} />
 
-            </Switch>
-            {/* <Footer /> */}
-          </Router>
+        </Switch>
+        {/* <Footer /> */}
+      </Router>
     </>
   )
 }

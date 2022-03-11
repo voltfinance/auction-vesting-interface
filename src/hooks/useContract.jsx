@@ -18,11 +18,11 @@ export function useContract (address, ABI) {
   }, [address, web3, ABI])
 }
 
-export function useMultipleContractsSingleInterface(addresses, ABI) {
+export function useMultipleContractsSingleInterface (addresses, ABI) {
   const { web3 } = useWeb3Context()
 
   return useMemo(() => {
-    if (web3 && addresses.length && ABI){
+    if (web3 && addresses.length && ABI) {
       return addresses.map((address) => {
         return new web3.eth.Contract(ABI, address)
       })
@@ -30,7 +30,6 @@ export function useMultipleContractsSingleInterface(addresses, ABI) {
       return []
     }
   }, [addresses, ABI, web3])
-
 }
 
 export function useTokenContract (address) {
@@ -41,10 +40,10 @@ export function useTokenSaleContract (address) {
   return useContract(address, TOKEN_SALE_ABI)
 }
 
-export function useVestingContract(vestingAddress) {
+export function useVestingContract (vestingAddress) {
   return useContract(vestingAddress, VESTING_ABI)
 }
 
-export function useMultiCallContract() {
+export function useMultiCallContract () {
   return useContract(MULTICALL_ADDRESS, MULTICALL_ABI)
 }

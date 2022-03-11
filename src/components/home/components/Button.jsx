@@ -2,13 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { darken, lighten } from 'polished'
 
-import  Row  from './Row'
+import Row from './Row'
 import { ChevronDown } from 'react-feather'
 import { Button as RebassButton, ButtonProps } from 'rebass/styled-components'
 
 const Base = styled(RebassButton)`
-  height: ${({ height }) => (height ? height : '48px')};
-  width: ${({ width }) => (width ? width : '100%')};
+  height: ${({ height }) => (height || '48px')};
+  width: ${({ width }) => (width || '100%')};
   font-size: 16px;
   font-weight: 500;
   text-align: center;
@@ -110,7 +110,7 @@ export const ButtonSecondary = styled(Base)`
   color: ${({ theme }) => theme.text7};
   font-size: 16px;
   border-radius: 999px;
-  padding: ${({ padding }) => (padding ? padding : '10px')};
+  padding: ${({ padding }) => (padding || '10px')};
 
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.bg7)};
@@ -136,7 +136,7 @@ export const ButtonTertiary = styled(Base)`
   font-weight: 500;
   background: #dde2fe;
   border-radius: 999px;
-  padding: ${({ padding }) => (padding ? padding : '6px')};
+  padding: ${({ padding }) => (padding || '6px')};
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.bg7)};
     background-color: ${({ theme }) => darken(0.05, theme.bg7)};
@@ -357,7 +357,7 @@ export const ButtonSwitchStyle = styled(Base)`
   }
 `
 
-export function ButtonConfirmed({
+export function ButtonConfirmed ({
   confirmed,
   altDisabledStyle,
   ...rest
@@ -369,7 +369,7 @@ export function ButtonConfirmed({
   }
 }
 
-export function ButtonDark({ dark, ...rest } ) {
+export function ButtonDark ({ dark, ...rest }) {
   if (dark) {
     return <ButtonGray {...rest} />
   } else {
@@ -377,7 +377,7 @@ export function ButtonDark({ dark, ...rest } ) {
   }
 }
 
-export function ButtonError({ error, ...rest } ) {
+export function ButtonError ({ error, ...rest }) {
   if (error) {
     return <ButtonErrorStyle {...rest} />
   } else {
@@ -385,7 +385,7 @@ export function ButtonError({ error, ...rest } ) {
   }
 }
 
-export function ButtonGradient({ error, ...rest } ) {
+export function ButtonGradient ({ error, ...rest }) {
   if (error) {
     return <ButtonErrorStyle {...rest} />
   } else {
@@ -393,7 +393,7 @@ export function ButtonGradient({ error, ...rest } ) {
   }
 }
 
-export function ButtonGradientOutline({ error, ...rest } ) {
+export function ButtonGradientOutline ({ error, ...rest }) {
   if (error) {
     return <ButtonGradientOutlineStyle {...rest} />
   } else {
@@ -401,11 +401,11 @@ export function ButtonGradientOutline({ error, ...rest } ) {
   }
 }
 
-export function ButtonSwitchGradient({ active = false, ...rest } ) {
+export function ButtonSwitchGradient ({ active = false, ...rest }) {
   return <ButtonSwitchStyle {...rest} active={active} />
 }
 
-export function ButtonDropdown({ disabled = false, children, ...rest } ) {
+export function ButtonDropdown ({ disabled = false, children, ...rest }) {
   return (
     <ButtonPrimary {...rest} disabled={disabled}>
       <Row>
@@ -416,7 +416,7 @@ export function ButtonDropdown({ disabled = false, children, ...rest } ) {
   )
 }
 
-export function ButtonDropdownLight({ disabled = false, children, ...rest } ) {
+export function ButtonDropdownLight ({ disabled = false, children, ...rest }) {
   return (
     <ButtonOutlined {...rest} disabled={disabled}>
       <Row>
@@ -427,7 +427,7 @@ export function ButtonDropdownLight({ disabled = false, children, ...rest } ) {
   )
 }
 
-export function ButtonRadio({ active, ...rest } ) {
+export function ButtonRadio ({ active, ...rest }) {
   if (!active) {
     return <ButtonWhite {...rest} />
   } else {

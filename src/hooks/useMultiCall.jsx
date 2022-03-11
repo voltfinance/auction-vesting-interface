@@ -23,26 +23,26 @@ export default function useSingleContractCall (contract, method, args = []) {
   return result
 }
 
-function useAggregateCallData(calls) {
+function useAggregateCallData (calls) {
   // calls: [{contract: Contract, method: String(methodName), args: [arguments]}, {...}]
   return useMemo(
-    () =>
-      {
-        return calls?.map(({ contract, method, args }) => {
+    () => {
+      return calls?.map(({ contract, method, args }) => {
         if (!contract || !contract.methods[method] || !args) return
         return {
           target: contract._address,
-          callData: contract.methods[method](...args).encodeABI(),
+          callData: contract.methods[method](...args).encodeABI()
         }
-      })},
-    [calls],
+      })
+    },
+    [calls]
   )
 }
 
-export function useDoubleMultiCallSingleMethod(callObjects) {
+export function useDoubleMultiCallSingleMethod (callObjects) {
   const multiCall = useMultiCallContract()
   const firstLvlCalls = useMemo(() => {
-    let multiCalls = callObjects?.map(({ contract, method, argsArray }) => {
+    const multiCalls = callObjects?.map(({ contract, method, argsArray }) => {
       return argsArray?.map((args) => {
         return { contract, method, args }
       })
@@ -52,7 +52,7 @@ export function useDoubleMultiCallSingleMethod(callObjects) {
         if (!contract || !args) return
         return {
           target: contract?._address,
-          callData: contract.methods[method](...args).encodeABI(),
+          callData: contract.methods[method](...args).encodeABI()
         }
       })
     })
@@ -62,15 +62,15 @@ export function useDoubleMultiCallSingleMethod(callObjects) {
       return {
         contract: multiCall,
         method: 'aggregate',
-        args: [[{"target": multiCall._address, "callData": multiCall?.methods?.aggregate(multiCalls)?.encodeABI()}]],
+        args: [[{ target: multiCall._address, callData: multiCall?.methods?.aggregate(multiCalls)?.encodeABI() }]]
       }
     })
   }, [firstLvlCalls, multiCall])
   const callData = useAggregateCallData(calls)
   const rawResult = useMultiCallResult(callData)
-  const {web3} = useWeb3Context()
+  const { web3 } = useWeb3Context()
   return useMemo(() => {
-    if(!rawResult || !web3) return []
+    if (!rawResult || !web3) return []
     return Object.values(rawResult[1]).map((res) => {
       return web3.eth.abi.decodeParameters(['uint256', 'bytes[]'], res)
     }).map((res) => {
@@ -79,18 +79,18 @@ export function useDoubleMultiCallSingleMethod(callObjects) {
   }, [web3, rawResult])
 }
 
-function useMultiCallResult(callData) {
+function useMultiCallResult (callData) {
   const multiCall = useMultiCallContract()
   const result = useSingleContractCall(multiCall, 'aggregate', [callData])
   return result
 }
 
-export function useSingleCallResult(contract, method, args) {
+export function useSingleCallResult (contract, method, args) {
   const callData = useAggregateCallData([{ contract, method, args }])
   return useMultiCallResult(callData)
 }
 
-export function useSingleCallMultiData(contract, method, argsArray) {
+export function useSingleCallMultiData (contract, method, argsArray) {
   const calls = useMemo(() => {
     return argsArray?.map((args) => {
       return { contract, method, args }
@@ -100,7 +100,7 @@ export function useSingleCallMultiData(contract, method, argsArray) {
   return useMultiCallResult(callData)
 }
 
-export function useMultiCallSameData(contracts, method, args) {
+export function useMultiCallSameData (contracts, method, args) {
   const calls = useMemo(() => {
     if (!contracts || !method || !args) return
     return contracts.map((contract) => {
@@ -111,7 +111,7 @@ export function useMultiCallSameData(contracts, method, args) {
   return useMultiCallResult(callData)
 }
 
-export function useMultiCall(contracts, methods, argsArray) {
+export function useMultiCall (contracts, methods, argsArray) {
   const calls = useMemo(() => {
     if (
       !contracts ||
@@ -119,8 +119,7 @@ export function useMultiCall(contracts, methods, argsArray) {
       !argsArray ||
       contracts.length != methods.length ||
       methods.length != argsArray.length
-    )
-      return
+    ) { return }
     return argsArray.map((args, i) => {
       return { contract: contracts[i], method: methods[i], args: argsArray[i] }
     })

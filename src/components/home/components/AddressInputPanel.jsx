@@ -14,7 +14,7 @@ const InputPanel = styled.div`
   width: 100%;
 `
 
-const ContainerRow = styled.div<{ error }>`
+const ContainerRow = styled.div < { error } > `
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,7 +30,7 @@ const InputContainer = styled.div`
   padding: 1rem;
 `
 
-const Input = styled.input<{ error }>`
+const Input = styled.input < { error } > `
   font-size: 1.25rem;
   outline: none;
   border: none;
@@ -63,7 +63,7 @@ const Input = styled.input<{ error }>`
   }
 `
 
-export default function AddressInputPanel({
+export default function AddressInputPanel ({
   id,
   value,
   onChange,
@@ -91,7 +91,7 @@ export default function AddressInputPanel({
     <InputPanel id={id}>
       <ContainerRow error={error}>
         <InputContainer>
-          <AutoColumn gap="md">
+          <AutoColumn gap='md'>
             <RowBetween>
               <TYPE.black color={theme.text2} fontWeight={500} fontSize={14}>
                 Recipient
@@ -103,15 +103,15 @@ export default function AddressInputPanel({
               )}
             </RowBetween>
             <Input
-              className="recipient-address-input"
-              type="text"
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"
-              placeholder="Wallet Address or ENS name"
+              className='recipient-address-input'
+              type='text'
+              autoComplete='off'
+              autoCorrect='off'
+              autoCapitalize='off'
+              spellCheck='false'
+              placeholder='Wallet Address or ENS name'
               error={error}
-              pattern="^(0x[a-fA-F0-9]{40})$"
+              pattern='^(0x[a-fA-F0-9]{40})$'
               onChange={handleInput}
               value={value}
               readOnly={readOnly}
