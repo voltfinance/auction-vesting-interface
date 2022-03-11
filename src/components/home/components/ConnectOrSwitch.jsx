@@ -70,30 +70,34 @@ const Title = styled.p`
   color: white;
 `
 
-export default function ClaimVestingTable() {
+export default function ClaimVestingTable () {
   const { account, chainId, toggleWeb3Modal } = useWeb3Context()
   const switchNetwork = useSwitchNetwork()
 
-  useEffect(()=>{
+  useEffect(() => {
 
   }, [account, chainId])
   return (
     <Wrapper>
       <Title>Vesting Dashboard</Title>
-      <Card >
+      <Card>
         <Main>
-          <img src={wallet} width={'75px'} />       
-             <Text>Please connect your wallet</Text>
-             {!account ? (
-                  <button className="button--secondary" onClick={toggleWeb3Modal}>
-                    Connect wallet
-                  </button>
-                ) : chainId !== 122 ? (
-                  <button className=" button--secondary" onClick={switchNetwork}>
-                    Switch to Fuse
-                  </button>
-                ) : (
-                  <></>
+          <img src={wallet} width='75px' />
+          <Text>Please connect your wallet</Text>
+          {!account
+            ? (
+              <button className='button--secondary' onClick={toggleWeb3Modal}>
+                Connect wallet
+              </button>
+              )
+            : chainId !== 122
+              ? (
+                <button className=' button--secondary' onClick={switchNetwork}>
+                  Switch to Fuse
+                </button>
+                )
+              : (
+                <></>
                 )}
         </Main>
       </Card>

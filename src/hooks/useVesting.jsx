@@ -3,33 +3,33 @@ import { TOKEN_SWAP_CONTRACTS } from '../constants'
 import BigNumber from 'bignumber.js'
 import {
   useVestingContract,
-  useMultipleContractsSingleInterface,
+  useMultipleContractsSingleInterface
 } from './useContract'
 import {
   useDoubleMultiCallSingleMethod,
   useMultiCallSameData,
   useSingleCallMultiData,
-  useSingleCallResult,
+  useSingleCallResult
 } from './useMultiCall'
 import { useWeb3Context } from '@/context/web3'
 import VESTING_ABI from '@/constants/abis/vesting.json'
 import TOKENSALE_ABI from '@/constants/abis/tokenSale.json'
 
-export function useDecodeSolidityUintArrays(bytesArray) {
+export function useDecodeSolidityUintArrays (bytesArray) {
   return useWeb3DecodeParameters(bytesArray, ['uint256[]'])
 }
 
-export function useAllVestedTokens() {
+export function useAllVestedTokens () {
   const { web3 } = useWeb3Context()
   const allVestingIds = useAllVestingIds()
   const argsArray = useMemo(
     () => allVestingIds.map((res) => Object.values(res)[0].map((arg) => [arg])),
-    [allVestingIds],
+    [allVestingIds]
   )
   const vestingAddresses = useMemo(() => Object.keys(TOKEN_SWAP_CONTRACTS), [])
   const contracts = useMultipleContractsSingleInterface(
     vestingAddresses,
-    VESTING_ABI,
+    VESTING_ABI
   )
   const callObjects = useMemo(() => {
     if (contracts?.length && contracts.length === argsArray?.length) {
@@ -37,7 +37,7 @@ export function useAllVestedTokens() {
         return {
           contract: contracts[i],
           method: 'tokenGrants',
-          argsArray: args,
+          argsArray: args
         }
       })
     }
@@ -48,7 +48,7 @@ export function useAllVestedTokens() {
     return rawResult.map((res) => {
       return res[1]
         .map((bytes) =>
-          web3.eth.abi.decodeParameters(['uint256', 'uint256', 'uint16', 'uint16', 'uint16', 'uint256', 'address'], bytes),
+          web3.eth.abi.decodeParameters(['uint256', 'uint256', 'uint16', 'uint16', 'uint16', 'uint256', 'address'], bytes)
         )
         .reduce((mem, res) => {
           return mem.plus(res[1]).minus(res[5])
@@ -58,90 +58,90 @@ export function useAllVestedTokens() {
   return allVestings
 }
 
-function useWeb3DecodeParameters(bytesArray, argTypes) {
+function useWeb3DecodeParameters (bytesArray, argTypes) {
   const { web3 } = useWeb3Context()
   return useMemo(() => {
     return bytesArray.map((bytes) =>
-      web3.eth.abi.decodeParameters(argTypes, bytes),
+      web3.eth.abi.decodeParameters(argTypes, bytes)
     )
   }, [web3, bytesArray, argTypes])
 }
 
-export function useVestingIds(vestingAddress) {
+export function useVestingIds (vestingAddress) {
   const { account } = useWeb3Context()
   const vestingContract = useVestingContract(vestingAddress)
 
   const rawResult = useSingleCallResult(vestingContract, 'getActiveGrants', [
-    account,
+    account
   ])
   const ret = useDecodeSolidityUintArrays(rawResult?.returnData ?? [])
   const vestingIds = useMemo(
     () => (ret?.length && Object.values(ret[0]).length ? ret[0]['0'] : []),
-    [ret],
+    [ret]
   )
   return vestingIds
 }
 
-export function useAllVestingIds() {
+export function useAllVestingIds () {
   const { account } = useWeb3Context()
   const vestingAddresses = useMemo(() => {
     return Object.keys(TOKEN_SWAP_CONTRACTS)
   }, [TOKEN_SWAP_CONTRACTS])
   const contracts = useMultipleContractsSingleInterface(
     vestingAddresses,
-    VESTING_ABI,
+    VESTING_ABI
   )
   const rawResult = useMultiCallSameData(contracts, 'getActiveGrants', [
-    account,
+    account
   ])
   const results = useDecodeSolidityUintArrays(rawResult?.returnData ?? [])
   return results
 }
 
-export function useClaims(vestingAddress) {
+export function useClaims (vestingAddress) {
   const vestingContract = useVestingContract(vestingAddress)
   const vestingIds = useVestingIds(vestingAddress)
   const args = useMemo(() => vestingIds?.map((id) => [id]), [vestingIds])
   const rawResult = useSingleCallMultiData(
     vestingContract,
     'calculateGrantClaim',
-    args,
+    args
   )
   const claims = useWeb3DecodeParameters(rawResult?.returnData ?? [], [
     'uint16',
-    'uint256',
+    'uint256'
   ])
 
   const entries = useMemo(() => {
     return new Map(
-      claims.map((claim, i) => [vestingIds[i], Object.values(claim)]),
+      claims.map((claim, i) => [vestingIds[i], Object.values(claim)])
     )
   }, [claims, vestingIds])
 
   return useMemo(() => Object.fromEntries(entries), [entries])
 }
 
-export function useTotalClaim(vestingAddress) {
+export function useTotalClaim (vestingAddress) {
   const claims = useClaims(vestingAddress)
   return useMemo(() => {
     return Object.values(claims).reduce(
       (mem, claim) => mem.plus(claim[1]),
-      BigNumber(0),
+      BigNumber(0)
     )
   }, [claims])
 }
 
-export function useAllClaims() {
+export function useAllClaims () {
   const { web3 } = useWeb3Context()
   const allVestingIds = useAllVestingIds()
   const argsArray = useMemo(
     () => allVestingIds.map((res) => Object.values(res)[0].map((arg) => [arg])),
-    [allVestingIds],
+    [allVestingIds]
   )
   const vestingAddresses = useMemo(() => Object.keys(TOKEN_SWAP_CONTRACTS), [])
   const contracts = useMultipleContractsSingleInterface(
     vestingAddresses,
-    VESTING_ABI,
+    VESTING_ABI
   )
   const callObjects = useMemo(() => {
     if (contracts?.length && contracts.length === argsArray?.length) {
@@ -149,7 +149,7 @@ export function useAllClaims() {
         return {
           contract: contracts[i],
           method: 'calculateGrantClaim',
-          argsArray: args,
+          argsArray: args
         }
       })
     }
@@ -160,7 +160,7 @@ export function useAllClaims() {
     return rawResult.map((res) => {
       return res[1]
         .map((bytes) =>
-          web3.eth.abi.decodeParameters(['uint16', 'uint256'], bytes),
+          web3.eth.abi.decodeParameters(['uint16', 'uint256'], bytes)
         )
         .reduce((mem, res) => {
           return mem.plus(res[1])
@@ -170,16 +170,16 @@ export function useAllClaims() {
   return allClaims
 }
 
-export function useClaim(vestingAddress, grantId) {
+export function useClaim (vestingAddress, grantId) {
   const vestingContract = useVestingContract(vestingAddress)
   const rawResult = useSingleCallResult(
     vestingContract,
     'calculateGrantClaim',
-    [grantId],
+    [grantId]
   )
   const claims = useWeb3DecodeParameters(rawResult?.returnData ?? [], [
     'uint16',
-    'uint256',
+    'uint256'
   ])
   return claims
 }

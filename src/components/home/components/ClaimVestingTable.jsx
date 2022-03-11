@@ -9,7 +9,6 @@ import info from '@/assets/images/info.png'
 import { useWeb3Context } from '../../../context/web3'
 import BigNumber from 'bignumber.js'
 
-
 const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
@@ -109,7 +108,7 @@ width: 100%;
 margin-bottom: 10px;
 color: white;
 `
-export default function ClaimVestingTable() {
+export default function ClaimVestingTable () {
   const allClaims = useAllClaims()
   const unlockedTokens = useMemo(() => allClaims.reduce((mem, claim) => mem.plus(claim), BigNumber(0)), [allClaims])
   const allVestedTokens = useAllVestedTokens()
@@ -119,7 +118,7 @@ export default function ClaimVestingTable() {
   const [prevAccount, setPrevAccount] = useState(account)
   const vestings = useMemo(
     () => allVestingIdsRaw.map((res) => Object.values(res)[0]),
-    [allVestingIdsRaw],
+    [allVestingIdsRaw]
   )
 
   useEffect(() => {
@@ -150,7 +149,7 @@ export default function ClaimVestingTable() {
         </div>
         <Card
           style={{
-            background: '#242637',
+            background: '#242637'
           }}
         >
 
@@ -159,60 +158,68 @@ export default function ClaimVestingTable() {
               width: '448px',
               margin: 'auto',
               display: 'flex',
-              flexWrap: 'wrap',
+              flexWrap: 'wrap'
             }}
           >
-            {vestings ? (
+            {vestings
+              ? (
 
-              <>
-                {vestings[0]?.length == 0 & vestings[1]?.length == 0 & vestings[2]?.length == 0 & vestings[3]?.length == 0 ? (
-                  <>
-                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'20px'} textAlign={'center'} width={'100%'}>
-                      You have no tokens to claim
-                    </Text>
-                    <a
-                      rel='noreferrer noopener' target='_blank'
-                      href='https://app.voltage.finance/'
-                      style={{ margin: 'auto' }}
-                    >
-                      <button rel='noreferrer noopener' target='_blank' className='button-secondary' href='https://app.voltage.finance'>
-                        Open App →
-                      </button>
-                    </a>
-                  </>) : (
-                  <>
-                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'} marginRight={'170px'}>
-                      Round
-                    </Text>
-                    <Text fontFamily={'Inter'} fontWeight={'600'} fontSize={'24px'} color={'white'} marginBottom={'5px'}>
-                      Unlocked
-                    </Text>
-                    {Object.values(TOKEN_SWAP_CONTRACTS).map(({ address, name, isPrivate }, i) =>
-                      vestings[i]?.length ? (
-                        <ClaimVestingTableRow
-                          key={address}
-                          name={name}
-                          isPrivate={isPrivate}
-                          vestingAddress={address}
-                        />
-                      ) : null,
-                    )
-                    }
-                  </>
-                )}</>
-            ) : (
-              <Text color={'white'}>Loading...</Text>
-            )}
+                <>
+                  {vestings[0]?.length == 0 & vestings[1]?.length == 0 & vestings[2]?.length == 0 & vestings[3]?.length == 0
+                    ? (
+                      <>
+                        <Text fontFamily='Inter' fontWeight='600' fontSize='24px' color='white' marginBottom='20px' textAlign='center' width='100%'>
+                          You have no tokens to claim
+                        </Text>
+                        <a
+                          rel='noreferrer noopener' target='_blank'
+                          href='https://app.voltage.finance/'
+                          style={{ margin: 'auto' }}
+                        >
+                          <button rel='noreferrer noopener' target='_blank' className='button-secondary' href='https://app.voltage.finance'>
+                            Open App →
+                          </button>
+                        </a>
+                      </>)
+                    : (
+                      <>
+                        <Text fontFamily='Inter' fontWeight='600' fontSize='24px' color='white' marginBottom='5px' marginRight='170px'>
+                          Round
+                        </Text>
+                        <Text fontFamily='Inter' fontWeight='600' fontSize='24px' color='white' marginBottom='5px'>
+                          Unlocked
+                        </Text>
+                        {Object.values(TOKEN_SWAP_CONTRACTS).map(({ address, name, isPrivate }, i) =>
+                          vestings[i]?.length
+                            ? (
+                              <ClaimVestingTableRow
+                                key={address}
+                                name={name}
+                                isPrivate={isPrivate}
+                                vestingAddress={address}
+                              />
+                              )
+                            : null
+                        )}
+                      </>
+                      )}
+                </>
+                )
+              : (
+                <Text color='white'>Loading...</Text>
+                )}
 
           </Main>
         </Card>
         <div>
-          <Info style={{ paddingTop: '20px' }}> <img src={info} style={{ paddingBottom: '4px' }}></img>    To claim your tokens you need to choose from which round that you purchased token do you want to claim.
+          <Info style={{ paddingTop: '20px' }}> <img src={info} style={{ paddingBottom: '4px' }} />    To claim your tokens you need to choose from which round that you purchased token do you want to claim.
           </Info>
-          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your
-            unlocked tokens.</Info>
-          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }}></img>Please make sure you claim all your unlocked tokens. You should not have unlocked
-            tokens after claiming</Info>
+          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }} />Please make sure you claim all your
+            unlocked tokens.
+          </Info>
+          <Info> <img src={check} style={{ paddingBottom: '4px', paddingRight: '7px' }} />Please make sure you claim all your unlocked tokens. You should not have unlocked
+            tokens after claiming
+          </Info>
         </div>
       </Content>
     </Wrapper>

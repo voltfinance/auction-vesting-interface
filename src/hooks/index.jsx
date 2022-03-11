@@ -3,18 +3,18 @@ import { useMemo, useState, useEffect } from 'react'
 import { NetworkContextName } from '../constants'
 import { useWeb3Context } from '../context/web3'
 
-export function useActiveWeb3React() {
+export function useActiveWeb3React () {
   const context = useWeb3ReactCore()
   const contextNetwork = useWeb3ReactCore(NetworkContextName)
   return context.active ? context : contextNetwork
 }
 
-export function useInjectedProvider() {
+export function useInjectedProvider () {
   const { ethereum: library } = window
   return useMemo(() => library, [library])
 }
 
-export function useBlockNumber() {
+export function useBlockNumber () {
   const { web3 } = useWeb3Context()
   const [blockNumber, setBlockNumber] = useState(undefined)
   useAsyncWeb3Call(web3?.eth?.getBlockNumber(), setBlockNumber, web3)
@@ -22,7 +22,7 @@ export function useBlockNumber() {
   return blockNumber
 }
 
-export function useAsyncWeb3Call(promise, setResult, dep) {
+export function useAsyncWeb3Call (promise, setResult, dep) {
   useEffect(() => {
     let active = true
     load()
@@ -30,7 +30,7 @@ export function useAsyncWeb3Call(promise, setResult, dep) {
       active = false
     }
 
-    async function load() {
+    async function load () {
       setResult(undefined) // this is optional
       const res = await promise
       if (!active) {

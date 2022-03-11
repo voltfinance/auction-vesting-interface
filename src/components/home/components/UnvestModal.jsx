@@ -107,7 +107,7 @@ const Title = styled.p`
   margin-bottom: 10px;
   color: white;
 `
-export default function UnvestModal() {
+export default function UnvestModal () {
   const { account, chainId } = useWeb3Context()
   const { vestingAddress } = useParams()
   const navigate = useNavigate()
@@ -124,7 +124,7 @@ export default function UnvestModal() {
     return Object.keys(claims).reduce((mem, key) => {
       return Object.defineProperty(mem, key, {
         value: BigNumber(claims[key][1]).shiftedBy(-18),
-        enumerable: true,
+        enumerable: true
       })
     }, {})
   }, [claims])
@@ -133,9 +133,9 @@ export default function UnvestModal() {
     () =>
       Object.values(allClaims).reduce(
         (sum, claim) => sum.plus(claim),
-        BigNumber(0),
+        BigNumber(0)
       ),
-    [allClaims],
+    [allClaims]
   )
 
   const firstClaims = useMemo(() => {
@@ -144,9 +144,9 @@ export default function UnvestModal() {
       return key % 2
         ? mem
         : Object.defineProperty(mem, key, {
-            value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
-          })
+          value: BigNumber(claims[key][1]).shiftedBy(-18),
+          enumerable: true
+        })
     }, {})
   }, [claims])
 
@@ -154,9 +154,9 @@ export default function UnvestModal() {
     () =>
       Object.values(firstClaims).reduce(
         (sum, claim) => sum.plus(claim),
-        BigNumber(0),
+        BigNumber(0)
       ),
-    [firstClaims],
+    [firstClaims]
   )
 
   const secondClaims = useMemo(() => {
@@ -165,7 +165,7 @@ export default function UnvestModal() {
       return key % 2
         ? Object.defineProperty(mem, key, {
             value: BigNumber(claims[key][1]).shiftedBy(-18),
-            enumerable: true,
+            enumerable: true
           })
         : mem
     }, {})
@@ -175,9 +175,9 @@ export default function UnvestModal() {
     () =>
       Object.values(secondClaims).reduce(
         (sum, claim) => sum.plus(claim),
-        BigNumber(0),
+        BigNumber(0)
       ),
-    [secondClaims],
+    [secondClaims]
   )
   if (!isVestingAddress) {
     return (
@@ -188,7 +188,7 @@ export default function UnvestModal() {
               style={{
                 width: '100 %!important',
                 color: 'white',
-                alignContent: 'center',
+                alignContent: 'center'
               }}
             >
               <Main
@@ -199,7 +199,7 @@ export default function UnvestModal() {
                   flexWrap: 'wrap',
                   flexDirection: 'column',
                   width: '218px',
-                  alignItems: 'center',
+                  alignItems: 'center'
                 }}
               >
                 <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
@@ -212,7 +212,7 @@ export default function UnvestModal() {
       </>
     )
   }
-  if (TOKEN_SWAP_CONTRACTS[vestingAddress].isPrivate){
+  if (TOKEN_SWAP_CONTRACTS[vestingAddress].isPrivate) {
     navigate(`/private/${vestingAddress}`)
   }
   if (!account || chainId !== 122) return <ConnectOrSwitch />
@@ -222,7 +222,7 @@ export default function UnvestModal() {
       <Wrapper>
         <Title>Vesting Dasboard</Title>
         <Info>
-          <img src={info}></img>If you see two or more claiming buttons on the
+          <img src={info} />If you see two or more claiming buttons on the
           same vesting option is because you bought more than once. Please claim
           one at a time.
         </Info>
@@ -230,14 +230,14 @@ export default function UnvestModal() {
           style={{
             display: 'flex',
             justifyContent: 'flex-start',
-            width: '540px',
+            width: '540px'
           }}
         >
           <Card
             style={{
               width: '256px!important',
               color: 'white',
-              alignContent: 'center',
+              alignContent: 'center'
             }}
           >
             <Main
@@ -248,43 +248,43 @@ export default function UnvestModal() {
                 flexWrap: 'wrap',
                 flexDirection: 'column',
                 width: '218px',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
                 <img
                   src={FirstVesting}
-                  alt=""
+                  alt=''
                   style={{
                     width: '177px',
                     padding: '14px',
-                    margin: 'auto',
+                    margin: 'auto'
                   }}
                 />
               </div>
               <img
                 src={VoltIcon}
-                alt=""
+                alt=''
                 style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
               />
               Your Volt tokens
               <br /> unlocked at TGE
               <img
                 src={Underline}
-                alt=""
+                alt=''
                 style={{ width: '100%', paddingTop: '16px', margin: 'auto' }}
               />
               <Volt>Volt: {firstClaimSum.decimalPlaces(4).toString()}</Volt>
               <img
                 src={Underline}
-                alt=""
+                alt=''
                 style={{ width: '100%', paddingBottom: '14px', margin: 'auto' }}
               />
               {Object.keys(firstClaims).map((key) => {
                 return (
                   <>
                     <ButtonGradient
-                      maxWidth={'100%'}
+                      maxWidth='100%'
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
@@ -302,86 +302,88 @@ export default function UnvestModal() {
               })}
             </Main>
           </Card>
-          {new Date() >= new Date('Fri Mar 11 2022 9:00') ? (
-            <Card style={{ width: '256px!important', color: 'white' }}>
-              <Main
-                style={{
-                  width: '100%',
-                  margin: 'auto',
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  flexDirection: 'column',
-                  width: '218px',
-                  alignItems: 'center',
-                }}
-              >
-                <div
+          {new Date() >= new Date('Fri Mar 11 2022 9:00')
+            ? (
+              <Card style={{ width: '256px!important', color: 'white' }}>
+                <Main
                   style={{
-                    display: 'flex',
                     width: '100%',
-                    paddingTop: '16px',
                     margin: 'auto',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    flexDirection: 'column',
+                    width: '218px',
+                    alignItems: 'center'
                   }}
                 >
-                  <img
-                    src={SecondVesting}
-                    alt=""
+                  <div
                     style={{
+                      display: 'flex',
+                      width: '100%',
+                      paddingTop: '16px',
+                      margin: 'auto'
+                    }}
+                  >
+                    <img
+                      src={SecondVesting}
+                      alt=''
+                      style={{
+                        paddingBottom: '14px',
+                        margin: 'auto'
+                      }}
+                    />
+                  </div>
+                  <img
+                    src={VoltIcon}
+                    alt=''
+                    style={{
+                      width: '65px',
                       paddingBottom: '14px',
-                      margin: 'auto',
+                      margin: 'auto'
                     }}
                   />
-                </div>
-                <img
-                  src={VoltIcon}
-                  alt=""
-                  style={{
-                    width: '65px',
-                    paddingBottom: '14px',
-                    margin: 'auto',
-                  }}
-                />
-                <p style={{ marginBottom: '21px' }}>Daily Volt unesting</p>
-                <img
-                  src={Underline}
-                  alt=""
-                  style={{ width: '100%', paddingTop: '12px', margin: 'auto' }}
-                />
-                <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
-                <img
-                  src={Underline}
-                  alt=""
-                  style={{
-                    width: '100%',
-                    paddingBottom: '14px',
-                    margin: 'auto',
-                  }}
-                />
-                {Object.keys(secondClaims).map((key) => {
-                  return (
-                    <>
-                      <ButtonGradient
-                        maxWidth={'100%'}
-                        onClick={() => {
-                          vestingContract.methods
-                            .claimVestedTokens(key)
-                            .send({ from: account })
-                            .on('confirmation', (reciept) => {
-                              window.location.href = '/add'
-                            })
-                        }}
-                        style={{ marginTop: '5px' }}
-                      >
-                        Claim {secondClaims[key].decimalPlaces(4).toString()}
-                      </ButtonGradient>
-                    </>
-                  )
-                })}
-              </Main>
-            </Card>
-          ) : null}
+                  <p style={{ marginBottom: '21px' }}>Daily Volt unesting</p>
+                  <img
+                    src={Underline}
+                    alt=''
+                    style={{ width: '100%', paddingTop: '12px', margin: 'auto' }}
+                  />
+                  <Volt>Volt: {secondClaimSum.decimalPlaces(4).toString()}</Volt>
+                  <img
+                    src={Underline}
+                    alt=''
+                    style={{
+                      width: '100%',
+                      paddingBottom: '14px',
+                      margin: 'auto'
+                    }}
+                  />
+                  {Object.keys(secondClaims).map((key) => {
+                    return (
+                      <>
+                        <ButtonGradient
+                          maxWidth='100%'
+                          onClick={() => {
+                            vestingContract.methods
+                              .claimVestedTokens(key)
+                              .send({ from: account })
+                              .on('confirmation', (reciept) => {
+                                window.location.href = '/add'
+                              })
+                          }}
+                          style={{ marginTop: '5px' }}
+                        >
+                          Claim {secondClaims[key].decimalPlaces(4).toString()}
+                        </ButtonGradient>
+                      </>
+                    )
+                  })}
+                </Main>
+              </Card>
+              )
+            : null}
         </div>
-        <Link href="/">← Go Back </Link>
+        <Link href='/'>← Go Back </Link>
         {/* <ButtonGradient
           // maxWidth={'100%'}
           maxWidth={'70px'}
@@ -397,7 +399,7 @@ export default function UnvestModal() {
       <Wrapper>
         <Title>Vesting Dasboard</Title>
         <Info>
-          <img src={info}></img>If you see two or more claiming buttons on the
+          <img src={info} />If you see two or more claiming buttons on the
           same vesting option is because you bought more than once. Please claim
           one at a time.
         </Info>
@@ -411,42 +413,42 @@ export default function UnvestModal() {
                 flexWrap: 'wrap',
                 flexDirection: 'column',
                 width: '218px',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <div style={{ display: 'flex', width: '100%', margin: 'auto' }}>
                 <img
                   src={UnlockedTokens}
-                  alt=""
+                  alt=''
                   style={{
                     padding: '14px',
-                    margin: 'auto',
+                    margin: 'auto'
                   }}
                 />
               </div>
               <img
                 src={VoltIcon}
-                alt=""
+                alt=''
                 style={{ width: '65px', paddingBottom: '15px', margin: 'auto' }}
               />
               Your Volt tokens
               <br /> unlocked at TGE
               <img
                 src={Underline}
-                alt=""
+                alt=''
                 style={{ width: '100%', paddingTop: '16px', margin: 'auto' }}
               />
               <Volt>Volt: {allClaimsSum.decimalPlaces(4).toString()}</Volt>
               <img
                 src={Underline}
-                alt=""
+                alt=''
                 style={{ width: '100%', paddingBottom: '14px', margin: 'auto' }}
               />
               {Object.keys(allClaims).map((key) => {
                 return (
                   <>
                     <ButtonGradient
-                      maxWidth={'100%'}
+                      maxWidth='100%'
                       onClick={() => {
                         vestingContract.methods
                           .claimVestedTokens(key)
@@ -465,7 +467,7 @@ export default function UnvestModal() {
             </Main>
           </Card>
         </div>
-        <Link href="/">← Go Back </Link>
+        <Link href='/'>← Go Back </Link>
       </Wrapper>
     )
   }

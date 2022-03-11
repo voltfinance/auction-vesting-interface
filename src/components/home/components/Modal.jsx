@@ -37,15 +37,15 @@ const StyledDialogContent = styled(
 
   &[data-reach-dialog-content] {
     margin: 0 0 2rem 0;
-    border: 1px solid ${({ theme, backgroundColor }) => (backgroundColor ? backgroundColor : theme.bg1)};
-    background-color: ${({ theme, backgroundColor }) => (backgroundColor ? backgroundColor : theme.bg1)};
+    border: 1px solid ${({ theme, backgroundColor }) => (backgroundColor || theme.bg1)};
+    background-color: ${({ theme, backgroundColor }) => (backgroundColor || theme.bg1)};
     box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.95, theme.shadow1)};
     padding: 0px;
     width: 50vw;
     overflow: hidden;
     align-self: ${({ mobile }) => (mobile ? 'flex-end' : 'center')};
 
-    max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '462px')};
+    max-width: ${({ maxWidth }) => (maxWidth || '462px')};
     ${({ height }) =>
       height &&
       css`
@@ -80,7 +80,7 @@ const StyledDialogContent = styled(
   }
 `
 
-export default function Modal({
+export default function Modal ({
   isOpen,
   onDismiss,
   height,
@@ -124,7 +124,7 @@ export default function Modal({
                       style: { transform: y.interpolate(y => `translateY(${y > 0 ? y : 0}px)`) }
                     }
                   : {})}
-                aria-label="dialog content"
+                aria-label='dialog content'
                 height={height}
                 minHeight={minHeight}
                 maxHeight={maxHeight}

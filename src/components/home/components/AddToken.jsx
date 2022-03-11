@@ -84,29 +84,31 @@ const Title = styled.p`
   color: white;
 `
 
-export default function ClaimVestingTable() {
+export default function ClaimVestingTable () {
   const addToken = useAddToken()
-  const {account} = useWeb3Context()
-  
-  useEffect(()=>{
+  const { account } = useWeb3Context()
+
+  useEffect(() => {
 
   }, [account])
 
-  if (!account) return (
-    <ConnectOrSwitch />
-  )
+  if (!account) {
+    return (
+      <ConnectOrSwitch />
+    )
+  }
 
   return (
-    
+
     <Wrapper>
       <Title>Vesting Dashboard</Title>
-      <Card >
+      <Card>
         <Main>
           <div>
             <Text>Thank you for joining Voltage Finance</Text>
             <Text>Add VOLT token to your wallet</Text>
           </div>
-          <img src={volt} width={'100px'} />
+          <img src={volt} width='100px' />
 
           <button
             className='button--secondary'
@@ -117,7 +119,7 @@ export default function ClaimVestingTable() {
           </button>
         </Main>
       </Card>
-      <Link href="/">← Go Back </Link>
+      <Link href='/'>← Go Back </Link>
     </Wrapper>
   )
 }
