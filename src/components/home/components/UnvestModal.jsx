@@ -342,7 +342,7 @@ export default function UnvestModal () {
                       margin: 'auto'
                     }}
                   />
-                  <p style={{ marginBottom: '21px' }}>Daily Volt unesting</p>
+                  <p style={{ marginBottom: '21px' }}>Daily Volt unvesting</p>
                   <img
                     src={Underline}
                     alt=''
