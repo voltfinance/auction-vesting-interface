@@ -17,7 +17,7 @@ export default function useAddToken () {
             address: VOLT_ADDRESS,
             symbol: 'VOLT',
             decimals: 18,
-            image: ''
+            image: 'https://fuselogo.s3.eu-central-1.amazonaws.com/volt_icon.png'
           }
         }
       })
